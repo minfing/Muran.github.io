@@ -1,0 +1,2375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>铁道工电系 & 星河未满 - 纪念册</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', -apple-system, sans-serif;
+            background: #0a0a12;
+            color: #fff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        ::selection {
+            background: rgba(233, 69, 96, 0.3);
+            color: #fff;
+        }
+
+        /* 动态背景层 */
+        .bg-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* 渐变背景动画 - 重做 */
+        .bg-gradient {
+            background: linear-gradient(180deg, 
+                #0a0015 0%, 
+                #1a0a2e 20%, 
+                #0f1a3a 40%, 
+                #1a0a2e 60%, 
+                #0a0015 80%, 
+                #0a0015 100%);
+            background-size: 100% 400%;
+            animation: verticalGradient 20s ease-in-out infinite;
+        }
+
+        @keyframes verticalGradient {
+            0%, 100% { 
+                background-position: 0% 50%;
+                background: linear-gradient(135deg, #0a0a12 0%, #1a0f2e 35%, #0f1a2e 70%, #0a0a12 100%);
+            }
+            25% { 
+                background-position: 25% 50%;
+                background: linear-gradient(135deg, #0a0a12 0%, #1a1a2e 35%, #0f2e1a 70%, #0a0a12 100%);
+            }
+            50% { 
+                background-position: 50% 50%;
+                background: linear-gradient(135deg, #0a0a12 0%, #0f1a2e 35%, #1a0f2e 70%, #0a0a12 100%);
+            }
+            75% { 
+                background-position: 75% 50%;
+                background: linear-gradient(135deg, #0a0a12 0%, #2e1a0f 35%, #1a1a2e 70%, #0a0a12 100%);
+            }
+        }
+
+        /* 星星背景 */
+        #stars {
+            background: transparent;
+        }
+
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: starPulse ease-in-out infinite;
+            box-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.4);
+        }
+
+        @keyframes starPulse {
+            0%, 100% { 
+                opacity: 0.2; 
+                transform: scale(1);
+                box-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.4);
+            }
+            50% { 
+                opacity: 1; 
+                transform: scale(1.3);
+                box-shadow: 0 0 20px rgba(255,255,255,1), 0 0 40px rgba(255,255,255,0.6);
+            }
+        }
+
+        /* 流星 */
+        .meteor {
+            position: absolute;
+            width: 2px;
+            height: 120px;
+            background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,1), rgba(245,166,35,0.8), rgba(231,76,60,0.4));
+            animation: meteorShoot linear forwards;
+            border-radius: 1px;
+            box-shadow: 0 0 15px rgba(245,166,35,0.6), 0 0 30px rgba(231,76,60,0.3);
+        }
+
+        @keyframes meteorShoot {
+            0% { 
+                transform: translateX(0) translateY(0) rotate(135deg); 
+                opacity: 1; 
+            }
+            70% { opacity: 1; }
+            100% { 
+                transform: translateX(-500px) translateY(500px) rotate(135deg); 
+                opacity: 0; 
+            }
+        }
+
+        /* 光晕效果 - 重做 */
+        .glow-orbs {
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(231,76,60,0.18) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(245,166,35,0.15) 0%, transparent 45%),
+                radial-gradient(circle at 50% 70%, rgba(52,152,219,0.12) 0%, transparent 55%),
+                radial-gradient(circle at 15% 80%, rgba(155,89,182,0.1) 0%, transparent 40%),
+                radial-gradient(circle at 85% 60%, rgba(26,188,156,0.08) 0%, transparent 50%);
+            animation: orbsRotate 25s ease-in-out infinite;
+        }
+
+        @keyframes orbsRotate {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 1; }
+            25% { transform: translateY(-15px) scale(1.05); opacity: 0.95; }
+            50% { transform: translateY(10px) scale(0.98); opacity: 1; }
+            75% { transform: translateY(-25px) scale(1.02); opacity: 0.9; }
+        }
+
+        /* 浮动粒子 */
+        #particles {
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: float-particle ease-in-out infinite;
+            filter: blur(0.5px);
+        }
+
+        .particle.small {
+            width: 2px;
+            height: 2px;
+            background: rgba(255,255,255,0.8);
+        }
+
+        .particle.medium {
+            width: 4px;
+            height: 4px;
+            background: rgba(245,166,35,0.6);
+            box-shadow: 0 0 10px rgba(245,166,35,0.5);
+        }
+
+        .particle.large {
+            width: 6px;
+            height: 6px;
+            background: rgba(233,69,96,0.7);
+            box-shadow: 0 0 15px rgba(233,69,96,0.6);
+        }
+
+        @keyframes float-particle {
+            0%, 100% { transform: translateY(0) translateX(0) scale(1); opacity: 0.5; }
+            25% { transform: translateY(-20px) translateX(10px) scale(1.1); opacity: 0.8; }
+            50% { transform: translateY(-10px) translateX(-10px) scale(0.9); opacity: 0.6; }
+            75% { transform: translateY(-30px) translateX(5px) scale(1.05); opacity: 0.7; }
+        }
+
+        /* 导航栏 */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(10, 10, 18, 0.8);
+            backdrop-filter: blur(30px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        nav.scrolled {
+            padding: 12px 60px;
+            background: rgba(10, 10, 18, 0.95);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.4), 0 0 60px rgba(233,69,96,0.1);
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f5a623, #e94560, #9b59b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+            position: relative;
+        }
+
+        .nav-logo::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #f5a623, #e94560);
+            transition: width 0.4s ease;
+        }
+
+        .nav-logo:hover::after {
+            width: 100%;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 45px;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            padding: 8px 18px;
+            border-radius: 25px;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(245,166,35,0.12), rgba(233,69,96,0.12));
+            border-radius: 25px;
+            transform: translateX(-50%);
+            transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-links a:hover::before {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .nav-links a.active {
+            color: #fff;
+            background: linear-gradient(135deg, rgba(245,166,35,0.18), rgba(233,69,96,0.18));
+            box-shadow: 0 4px 15px rgba(233,69,96,0.15);
+        }
+
+        /* 通用容器 */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        section {
+            min-height: 100vh;
+            padding: 120px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 头部区域 */
+        #hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .hero-bg-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(233,69,96,0.12) 0%, rgba(245,166,35,0.08) 30%, transparent 70%);
+            pointer-events: none;
+            animation: pulse-glow 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+        }
+
+        .hero-subtitle {
+            font-size: 0.95rem;
+            color: #e94560;
+            letter-spacing: 15px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.3s forwards;
+            font-weight: 600;
+        }
+
+        .hero-title {
+            font-size: 5.5rem;
+            font-weight: 900;
+            margin-bottom: 25px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.5s forwards;
+            letter-spacing: -4px;
+        }
+
+        .hero-title .line1 {
+            display: block;
+            background: linear-gradient(135deg, #f5a623 0%, #e94560 35%, #c44569 70%, #9b59b6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 120px rgba(233,69,96,0.4);
+            animation: text-shimmer 4s ease-in-out infinite;
+            background-size: 200% 200%;
+        }
+
+        @keyframes text-shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero-title .line2 {
+            display: block;
+            font-size: 3rem;
+            margin-top: 15px;
+            background: linear-gradient(135deg, #9b59b6, #3498db, #1abc9c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 12px;
+            animation: text-shimmer-alt 5s ease-in-out infinite;
+            background-size: 200% 200%;
+        }
+
+        @keyframes text-shimmer-alt {
+            0%, 100% { background-position: 100% 50%; }
+            50% { background-position: 0% 50%; }
+        }
+
+        .hero-desc {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.45);
+            margin-bottom: 70px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.7s forwards;
+            font-weight: 300;
+            letter-spacing: 3px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 90px;
+            margin-bottom: 60px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.9s forwards;
+        }
+
+        .stat-item {
+            text-align: center;
+            position: relative;
+            padding: 30px 40px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(245,166,35,0.08), rgba(233,69,96,0.08));
+            border-radius: 24px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .stat-item:hover::before {
+            opacity: 1;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-10px) scale(1.03);
+            border-color: rgba(245,166,35,0.3);
+            box-shadow: 0 25px 50px rgba(245,166,35,0.18);
+        }
+
+        .stat-item::after {
+            content: '';
+            position: absolute;
+            right: -45px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1px;
+            height: 50px;
+            background: linear-gradient(180deg, transparent, rgba(245,166,35,0.3), transparent);
+        }
+
+        .stat-item:last-child::after {
+            display: none;
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #f5a623, #e94560);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.4);
+            margin-top: 10px;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(60px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        /* 板块标题 */
+        .section-header {
+            text-align: center;
+            margin-bottom: 90px;
+        }
+
+        .section-tag {
+            font-size: 0.85rem;
+            color: #e94560;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -2px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #f5a623, #e94560, #c44569);
+            border-radius: 2px;
+            animation: line-grow 1s ease 0.5s forwards;
+            opacity: 0;
+        }
+
+        @keyframes line-grow {
+            from { width: 0; opacity: 0; }
+            to { width: 80px; opacity: 1; }
+        }
+
+        .section-line {
+            display: none;
+        }
+
+        /* 关于我们 */
+        #about {
+            background: linear-gradient(180deg, rgba(10,10,18,0) 0%, rgba(233,69,96,0.04) 50%, rgba(10,10,18,0) 100%);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .about-text {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .about-text.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            line-height: 2.2;
+            color: rgba(255,255,255,0.65);
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .about-text .highlight {
+            color: #f5a623;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .about-text .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #f5a623, #e94560);
+            opacity: 0.5;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .about-text .highlight:hover::after {
+            transform: scaleX(1);
+        }
+
+        .about-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.9s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+        }
+
+        .about-cards.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .about-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 22px;
+            padding: 35px 28px;
+            text-align: center;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #f5a623, #e94560, #9b59b6);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .about-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .about-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: rgba(233,69,96,0.35);
+            box-shadow: 0 30px 60px rgba(233,69,96,0.15);
+            background: linear-gradient(145deg, rgba(233,69,96,0.08) 0%, rgba(233,69,96,0.02) 100%);
+        }
+
+        .about-card-icon {
+            font-size: 3rem;
+            margin-bottom: 18px;
+            transition: transform 0.4s ease;
+        }
+
+        .about-card:hover .about-card-icon {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .about-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .about-card p {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.45);
+        }
+
+        .qrcode-wrapper {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.3s ease;
+        }
+
+        .about-card:hover .qrcode-wrapper {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .qrcode {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            border: 2px solid rgba(245,166,35,0.3);
+            box-shadow: 0 4px 15px rgba(245,166,35,0.2);
+        }
+
+        .qrcode-hint {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.5);
+            margin-top: 8px;
+        }
+
+        .wechat-card {
+            background: linear-gradient(145deg, rgba(46,213,115,0.1) 0%, rgba(46,213,115,0.02) 100%);
+            border-color: rgba(46,213,115,0.2);
+            overflow: visible;
+        }
+
+        .wechat-card::before {
+            background: linear-gradient(90deg, #2ed573, #7bed9f);
+        }
+
+        .wechat-card:hover {
+            border-color: rgba(46,213,115,0.4);
+            box-shadow: 0 30px 60px rgba(46,213,115,0.15);
+            background: linear-gradient(145deg, rgba(46,213,115,0.15) 0%, rgba(46,213,115,0.05) 100%);
+        }
+
+        .qrcode-container {
+            margin-top: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transform: scale(0.8) translateY(10px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .wechat-card:hover .qrcode-container {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .qrcode-box {
+            background: #fff;
+            padding: 8px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(46,213,115,0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .wechat-card:hover .qrcode-box {
+            transform: scale(1.05);
+        }
+
+        .qrcode-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+        }
+
+        .qrcode-text {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.6);
+            margin-top: 12px;
+            font-weight: 500;
+        }
+
+        .wechat-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #2ed573, #7bed9f);
+            color: #0a0a12;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+        }
+
+        .wechat-card:hover .wechat-link {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .wechat-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(46,213,115,0.4);
+        }
+
+        /* 时间线 */
+        .timeline-container {
+            position: relative;
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        .timeline-track {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #f5a623 0%, #e94560 30%, #c44569 60%, #9b59b6 100%);
+            border-radius: 2px;
+            box-shadow: 0 0 20px rgba(233,69,96,0.3);
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: flex-end;
+            padding-right: calc(50% + 60px);
+            margin-bottom: 70px;
+            opacity: 0;
+            transform: translateX(-60px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .timeline-item:nth-child(even) {
+            justify-content: flex-start;
+            padding-right: 0;
+            padding-left: calc(50% + 60px);
+            transform: translateX(60px);
+        }
+
+        .timeline-item:nth-child(even).visible {
+            transform: translateX(0);
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 22px;
+            height: 22px;
+            background: linear-gradient(135deg, #f5a623, #e94560);
+            border-radius: 50%;
+            border: 4px solid #0a0a12;
+            z-index: 2;
+            box-shadow: 0 0 25px rgba(233,69,96,0.5), 0 0 50px rgba(233,69,96,0.3);
+            transition: all 0.4s ease;
+        }
+
+        .timeline-item:hover .timeline-dot {
+            transform: translateX(-50%) scale(1.3);
+            box-shadow: 0 0 35px rgba(233,69,96,0.7), 0 0 70px rgba(233,69,96,0.4);
+        }
+
+        .timeline-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px;
+            padding: 35px;
+            max-width: 420px;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .timeline-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(245,166,35,0.05), rgba(233,69,96,0.05));
+            border-radius: 24px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .timeline-card:hover::before {
+            opacity: 1;
+        }
+
+        .timeline-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(233,69,96,0.3);
+            box-shadow: 0 25px 50px rgba(233,69,96,0.15);
+        }
+
+        .timeline-date-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f5a623, #e94560);
+            color: #fff;
+            padding: 8px 22px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .timeline-card:hover .timeline-date-badge {
+            transform: scale(1.05);
+        }
+
+        .timeline-card h3 {
+            font-size: 1.45rem;
+            margin-bottom: 15px;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .timeline-card p {
+            color: rgba(255,255,255,0.55);
+            line-height: 1.9;
+            font-size: 0.95rem;
+        }
+
+        /* 成就展示 */
+        #achievements {
+            background: linear-gradient(180deg, rgba(10,10,18,0) 0%, rgba(245,166,35,0.03) 50%, rgba(10,10,18,0) 100%);
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        .achievement-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 28px;
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .achievement-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .achievement-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(245,166,35,0.1), transparent, rgba(233,69,96,0.1), transparent);
+            animation: rotate-conic 8s linear infinite;
+        }
+
+        @keyframes rotate-conic {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .achievement-card:hover::before {
+            animation-duration: 2s;
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-15px);
+            border-color: rgba(245,166,35,0.3);
+            box-shadow: 0 30px 60px rgba(245,166,35,0.12);
+        }
+
+        .achievement-icon {
+            font-size: 4rem;
+            margin-bottom: 22px;
+            position: relative;
+            z-index: 1;
+            animation: icon-bounce 3s ease-in-out infinite;
+        }
+
+        @keyframes icon-bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .achievement-card:hover .achievement-icon {
+            animation: icon-bounce 0.5s ease-in-out infinite;
+        }
+
+        .achievement-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #fff;
+            position: relative;
+            z-index: 1;
+        }
+
+        .achievement-desc {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        .achievement-year {
+            display: inline-block;
+            background: linear-gradient(135deg, #f5a623, #e94560);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-top: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 学校介绍 */
+        #school {
+            background: linear-gradient(180deg, rgba(10,10,18,0) 0%, rgba(52,152,219,0.03) 50%, rgba(10,10,18,0) 100%);
+        }
+
+        .school-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 28px;
+        }
+
+        .school-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 22px;
+            padding: 35px;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            transform: translateY(30px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .school-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .school-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(52,152,219,0.08), rgba(155,89,182,0.08));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .school-card:hover::before {
+            opacity: 1;
+        }
+
+        .school-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(52,152,219,0.3);
+            box-shadow: 0 25px 50px rgba(52,152,219,0.12);
+        }
+
+        .school-icon {
+            font-size: 2.8rem;
+            margin-bottom: 18px;
+            transition: all 0.4s ease;
+        }
+
+        .school-card:hover .school-icon {
+            transform: scale(1.15) rotate(10deg);
+        }
+
+        .school-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .school-card p {
+            font-size: 0.92rem;
+            color: rgba(255,255,255,0.55);
+            line-height: 1.85;
+        }
+
+        .school-card .link {
+            color: #3498db;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .school-card .link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #3498db, #1abc9c);
+            transition: width 0.3s ease;
+        }
+
+        .school-card .link:hover {
+            color: #1abc9c;
+        }
+
+        .school-card .link:hover::after {
+            width: 100%;
+        }
+
+        /* 留言板 */
+        .guestbook-content {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 60px;
+            margin-top: 60px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .guestbook-content.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .guestbook-form {
+            background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 18px 22px;
+            background: rgba(255,255,255,0.03);
+            border: 2px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            color: #fff;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255,255,255,0.3);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #f5a623;
+            background: rgba(245,166,35,0.03);
+            box-shadow: 0 0 30px rgba(245,166,35,0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 20px 40px;
+            background: linear-gradient(135deg, #f5a623, #e94560);
+            border: none;
+            border-radius: 16px;
+            color: #fff;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .submit-btn .btn-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.5s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(245,166,35,0.3);
+        }
+
+        .submit-btn:hover .btn-glow {
+            width: 300px;
+            height: 300px;
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .guestbook-messages {
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .guestbook-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .guestbook-messages::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+        }
+
+        .guestbook-messages::-webkit-scrollbar-thumb {
+            background: rgba(245,166,35,0.3);
+            border-radius: 10px;
+        }
+
+        .guestbook-messages::-webkit-scrollbar-thumb:hover {
+            background: rgba(245,166,35,0.5);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: rgba(255,255,255,0.3);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-hint {
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .message-item {
+            background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.02) 100%);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 18px;
+            animation: message-fade-in 0.4s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes message-fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .message-author {
+            font-weight: 700;
+            color: #f5a623;
+            font-size: 1.05rem;
+        }
+
+        .message-time {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.35);
+        }
+
+        .message-content {
+            color: rgba(255,255,255,0.75);
+            line-height: 1.8;
+            font-size: 0.98rem;
+        }
+
+        /* 回到顶部 */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #f5a623, #e94560);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 5px 20px rgba(233,69,96,0.4);
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 8px 30px rgba(233,69,96,0.5);
+        }
+
+        .scroll-top::before {
+            content: '↑';
+            font-size: 24px;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* 滚动进度条 */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #f5a623, #e94560, #f5a623);
+            background-size: 200% 100%;
+            animation: gradientFlow 2s ease infinite;
+            z-index: 9999;
+            transition: width 0.1s ease;
+        }
+
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* 打字机效果 */
+        .typing-container {
+            display: inline-block;
+        }
+
+        .typing-text {
+            display: inline-block;
+            overflow: hidden;
+            border-right: 3px solid rgba(245,166,35,0.8);
+            animation: blink-caret 0.75s step-end infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: rgba(245,166,35,0.8); }
+        }
+
+        /* 时间轴交互 */
+        .timeline-card {
+            transition: all 0.4s ease;
+        }
+
+        .timeline-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(233,69,96,0.3);
+        }
+
+        /* 鼠标跟随光效 */
+        .cursor-glow {
+            position: fixed;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(233,69,96,0.15) 0%, transparent 70%);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9998;
+            transition: opacity 0.3s ease;
+        }
+
+        /* 卡片发光边框 */
+        .about-card, .achievement-card, .school-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-card::before, .achievement-card::before, .school-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #f5a623, #e94560, #f5a623, #e94560);
+            border-radius: inherit;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1;
+            background-size: 400% 400%;
+            animation: borderGlow 3s ease infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .about-card:hover::before, .achievement-card:hover::before, .school-card:hover::before {
+            opacity: 1;
+        }
+
+        /* 3D卡片效果 */
+        .about-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+        }
+
+        /* 玻璃态效果增强 */
+        .guestbook-form, .message-item {
+            backdrop-filter: blur(20px);
+            background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+        }
+
+        /* 文字发光效果 */
+        .hero-title {
+            text-shadow: 0 0 30px rgba(233,69,96,0.3), 0 0 60px rgba(245,166,35,0.2);
+        }
+
+        .section-title {
+            text-shadow: 0 0 20px rgba(233,69,96,0.2);
+        }
+
+        /* 脉冲按钮 */
+        .submit-btn {
+            position: relative;
+            animation: pulseGlow 2s ease infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 5px 20px rgba(233,69,96,0.4); }
+            50% { box-shadow: 0 5px 40px rgba(245,166,35,0.6); }
+        }
+
+        /* 浮动星星增强 */
+        .particle {
+            filter: blur(1px);
+        }
+
+        /* 视差滚动容器 */
+        section {
+            transform-style: preserve-3d;
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 120px 20px 60px;
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(180deg, rgba(10,10,18,0) 0%, rgba(233,69,96,0.05) 100%);
+        }
+
+        .footer-logo {
+            font-size: 2.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f5a623, #e94560);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            animation: footer-shimmer 4s ease-in-out infinite;
+        }
+
+        @keyframes footer-shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .footer-text {
+            color: rgba(255,255,255,0.35);
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+        }
+
+        .footer-hearts {
+            margin-top: 40px;
+            font-size: 1.6rem;
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        /* 波纹动画效果 */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(233,69,96,0.3);
+            transform: scale(0);
+            animation: rippleEffect 0.6s ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes rippleEffect {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* 磁性卡片效果 */
+        .about-card, .achievement-card, .school-card {
+            transition: transform 0.15s ease, box-shadow 0.3s ease;
+        }
+
+        /* 增强玻璃态模糊 */
+        nav {
+            backdrop-filter: blur(30px);
+        }
+
+        /* 动态背景增强 */
+        .bg-gradient {
+            animation: verticalGradient 15s ease-in-out infinite;
+            transition: all 0.5s ease;
+        }
+
+        @keyframes verticalGradient {
+            0%, 100% { 
+                background: linear-gradient(135deg, #0a0a12 0%, #1a0f2e 35%, #0f1a2e 70%, #0a0a12 100%);
+            }
+            25% { 
+                background: linear-gradient(135deg, #0a0a12 0%, #1a1a2e 35%, #0f2e1a 70%, #0a0a12 100%);
+            }
+            50% { 
+                background: linear-gradient(135deg, #0a0a12 0%, #0f1a2e 35%, #1a0f2e 70%, #0a0a12 100%);
+            }
+            75% { 
+                background: linear-gradient(135deg, #0a0a12 0%, #2e1a0f 35%, #1a1a2e 70%, #0a0a12 100%);
+            }
+        }
+
+        /* 增强星星闪烁 */
+        .star {
+            animation: starPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes starPulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* 优化粒子动画 */
+        .particle {
+            animation: float-particle 12s ease-in-out infinite;
+            filter: blur(0.5px);
+        }
+
+        @keyframes float-particle {
+            0%, 100% { transform: translateY(0) translateX(0) scale(1); opacity: 0.5; }
+            25% { transform: translateY(-20px) translateX(10px) scale(1.1); opacity: 0.8; }
+            50% { transform: translateY(-10px) translateX(-10px) scale(0.9); opacity: 0.6; }
+            75% { transform: translateY(-30px) translateX(5px) scale(1.05); opacity: 0.7; }
+        }
+
+        /* 优化流星效果 */
+        .meteor {
+            animation: meteorFall 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        @keyframes meteorFall {
+            0% { transform: translate(0, 0) rotate(45deg); opacity: 1; }
+            70% { opacity: 1; }
+            100% { transform: translate(200px, 300px) rotate(45deg); opacity: 0; }
+        }
+
+        /* 光晕平滑波动 */
+        .glow-orbs {
+            animation: orbFloat 10s ease-in-out infinite;
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            33% { transform: translateY(-30px) scale(1.05); }
+            66% { transform: translateY(20px) scale(0.98); }
+        }
+
+        /* 现代化UI增强 */
+        .about-card, .achievement-card, .school-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px !important;
+        }
+
+        .about-card::before, .achievement-card::before, .school-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .about-card:hover::before, .achievement-card:hover::before, .school-card:hover::before {
+            left: 100%;
+        }
+
+        .section-title {
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #f5a623, #e94560);
+            border-radius: 2px;
+        }
+
+        /* 按钮优化 */
+        .submit-btn {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        /* 响应式 */
+        @media (max-width: 968px) {
+            nav { padding: 15px 25px; }
+            .nav-links { gap: 15px; }
+            .nav-links a { font-size: 0.8rem; padding: 5px 8px; }
+            
+            .hero-title { font-size: 3.2rem; }
+            .hero-title .line2 { font-size: 2rem; letter-spacing: 5px; }
+            .hero-stats { flex-direction: column; gap: 25px; }
+            .stat-item::after { display: none; }
+            
+            .about-content { grid-template-columns: 1fr; gap: 50px; }
+            .achievements-grid { grid-template-columns: 1fr; }
+            .guestbook-content { grid-template-columns: 1fr; gap: 40px; }
+            
+            .timeline-track { left: 20px; }
+            .timeline-item, .timeline-item:nth-child(even) {
+                padding-left: 65px;
+                padding-right: 0;
+                justify-content: flex-start;
+            }
+            .timeline-dot, .timeline-item:nth-child(even) .timeline-dot { left: 20px; }
+            .timeline-card { max-width: 100%; }
+            
+            .section-title { font-size: 2.3rem; }
+        }
+
+        @media (max-width: 640px) {
+            nav { padding: 12px 15px; }
+            .nav-links { gap: 10px; }
+            .nav-links a { font-size: 0.75rem; padding: 4px 6px; }
+            .nav-logo { font-size: 1rem; }
+            
+            .hero-title { font-size: 2.5rem; }
+            .hero-title .line2 { font-size: 1.5rem; letter-spacing: 3px; }
+            .hero-desc { font-size: 1rem; }
+            
+            .guestbook-form { padding: 25px; }
+            .form-group input, .form-group textarea { padding: 14px 16px; }
+            .submit-btn { padding: 16px 30px; }
+        }
+
+        @media (max-width: 480px) {
+            .hero-stats { gap: 20px; }
+            .stat-number { font-size: 2.8rem; }
+            .about-cards { grid-template-columns: 1fr; }
+            .school-content { grid-template-columns: 1fr; }
+            
+            .section-tag { font-size: 0.75rem; }
+            .section-title { font-size: 2rem; }
+            
+            .message-item { padding: 20px; }
+            .empty-icon { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景层 -->
+    <div class="bg-layer bg-gradient"></div>
+    <div class="bg-layer glow-orbs"></div>
+    <div class="bg-layer" id="stars"></div>
+    <div class="bg-layer" id="particles"></div>
+    <div class="bg-layer" id="meteors"></div>
+
+    <nav>
+        <div class="nav-logo">铁道工电系</div>
+        <div class="nav-links">
+            <a href="#hero" class="active">首页</a>
+            <a href="#about">关于我们</a>
+            <a href="#timeline">发展历程</a>
+            <a href="#achievements">成就展示</a>
+            <a href="#school">学校介绍</a>
+            <a href="#guestbook">留言板</a>
+        </div>
+    </nav>
+
+    <section id="hero">
+        <div class="hero-bg-glow"></div>
+        <div class="container">
+            <p class="hero-subtitle">THE MEMORIAL</p>
+            <h1 class="hero-title">
+                <span class="line1">铁道工电系</span>
+                <span class="line2">星河未满</span>
+            </h1>
+            <p class="hero-desc">记录成长 · 珍藏回忆</p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number counter" data-target="2025">0</div>
+                    <div class="stat-label">公众号创立年</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number counter" data-target="2026">0</div>
+                    <div class="stat-label">抖音创立年</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number counter" data-target="1">0</div>
+                    <div class="stat-label">年成长</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-tag">ABOUT US</p>
+                <h2 class="section-title">关于我们</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>
+                        <span class="highlight">铁道工电系</span>是<span class="highlight">太原铁路机械学校</span>下属的系部，
+                        专注于铁路相关领域的教育教学与技术研究，致力于培养铁路专业人才。
+                    </p>
+                    <p>
+                        从2025年9月17日起，<span class="highlight">铁道工电系</span>公众号正式启用，
+                        我们致力于传播铁路文化，分享工电技术，见证行业发展。
+                    </p>
+                    <p>
+                        2026年3月16日，<span class="highlight">星河未满</span>抖音号正式创立，开启了短视频领域的新篇章。
+                        每一段视频，都是星空中的一颗星；每一个关注，都是前进的动力。
+                    </p>
+                </div>
+                <div class="about-cards">
+                    <div class="about-card wechat-card">
+                        <div class="about-card-icon">📱</div>
+                        <h3>公众号</h3>
+                        <p>铁道工电系</p>
+                        <div class="qrcode-container">
+                            <div class="qrcode-box">
+                                <img src="https://s41.ax1x.com/2026/05/05/peHJzYq.jpg" alt="公众号二维码" class="qrcode-img">
+                            </div>
+                            <span class="qrcode-text">扫码关注公众号</span>
+                        </div>
+                    </div>
+                    <a href="https://v.douyin.com/Mc48FTUVn7M/" target="_blank" class="about-card">
+                        <div class="about-card-icon">🎬</div>
+                        <h3>抖音号</h3>
+                        <p>星河未满</p>
+                    </a>
+                    <div class="about-card">
+                        <div class="about-card-icon">🚀</div>
+                        <h3>新征程</h3>
+                        <p>持续成长中</p>
+                    </div>
+                    <div class="about-card">
+                        <div class="about-card-icon">⭐</div>
+                        <h3>星河梦</h3>
+                        <p>未满待续</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="timeline">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-tag">TIMELINE</p>
+                <h2 class="section-title">发展历程</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="timeline-container">
+                <div class="timeline-track"></div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <span class="timeline-date-badge">2025年9月17日</span>
+                        <h3>公众号正式启用</h3>
+                        <p>"铁道工电系"公众号正式启用，开启了内容创作与传播的旅程。从这一天起，一个新的声音在铁路相关领域开始响起。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <span class="timeline-date-badge">2026年3月16日</span>
+                        <h3>抖音号创办</h3>
+                        <p>"星河未满"抖音号正式创立。新的平台，新的开始，星河璀璨，未来可期。每一次创作都是星空中的一颗星。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <span class="timeline-date-badge">未来</span>
+                        <h3>持续成长</h3>
+                        <p>故事还在继续，星河未满，精彩待续。感谢每一位支持我们的朋友，未来让我们一起创造更多可能。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="achievements">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-tag">ACHIEVEMENTS</p>
+                <h2 class="section-title">成就展示</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="achievements-grid">
+                <div class="achievement-card">
+                    <div class="achievement-icon">🏆</div>
+                    <h3 class="achievement-title">从0到1</h3>
+                    <p class="achievement-desc">从无到有，成功创建并运营铁道工电系公众号</p>
+                    <div class="achievement-year">2025</div>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-icon">🎬</div>
+                    <h3 class="achievement-title">抖音启航</h3>
+                    <p class="achievement-desc">星河未满抖音号正式创立，进军短视频领域</p>
+                    <div class="achievement-year">2026</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="school">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-tag">DEPARTMENT INFO</p>
+                <h2 class="section-title">铁道工电系</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="school-content">
+                <div class="school-card">
+                    <div class="school-icon">🏫</div>
+                    <h3>系部概况</h3>
+                    <p>铁道工电系是太原铁路机械学校核心铁路特色系部，聚焦铁路工程、电气化供电、信号通信三大关键领域。隶属山西省教育厅直属公办国家级重点中职、国家示范校，地址位于太原市小店区坞城东街20号。</p>
+                </div>
+                <div class="school-card">
+                    <div class="school-icon">📚</div>
+                    <h3>专业设置</h3>
+                    <p>开设三大核心专业：电气化铁道供电（700105）、铁道信号施工与维护（700108）、铁道工程施工与维护（700101），均提供三年制中职与五年制"3+2"高职衔接模式。</p>
+                </div>
+                <div class="school-card">
+                    <div class="school-icon">🎓</div>
+                    <h3>师资力量</h3>
+                    <p>专任教师40余人，高级职称占比45%，"双师型"教师占比90%以上。专业带头人均为省级骨干教师/教学名师，兼职教师来自太原局集团、中铁电气化局等企业一线技术专家。</p>
+                </div>
+                <div class="school-card">
+                    <div class="school-icon">⚙️</div>
+                    <h3>实训基地</h3>
+                    <p>校内建有电气化供电实训中心、铁道信号实训中心（国赛训练基地）、铁道工程实训中心。校外合作单位包括太原局集团、中铁电气化局、中铁六局等。</p>
+                </div>
+                <div class="school-card">
+                    <div class="school-icon">🏆</div>
+                    <h3>系部荣誉</h3>
+                    <p>电气化铁道供电为省级示范专业，铁道信号为国赛获奖专业。近三年获省级以上奖项30+项，毕业生铁路系统就业率85%以上，国企就业率70%+。</p>
+                </div>
+                <div class="school-card">
+                    <div class="school-icon">💪</div>
+                    <h3>系部文化</h3>
+                    <p>系训：精工强能、笃行致远。育人理念：德技并修、知行合一。每年举办"工电技能文化节""工匠精神演讲比赛"等活动。</p>
+                </div>
+                <div class="school-card">
+                    <div class="school-icon">📞</div>
+                    <h3>联系信息</h3>
+                    <p>学校官网：<a href="https://www.ttjx.com.cn" target="_blank" class="link">www.ttjx.com.cn</a><br>地址：太原市小店区坞城东街20号三教学楼<br>招生咨询：0351-2630291</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="guestbook">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-tag">GUESTBOOK</p>
+                <h2 class="section-title">留言板</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="guestbook-content">
+                <div class="guestbook-form">
+                    <div class="form-group">
+                        <input type="text" id="guestName" placeholder="你的名字" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="guestMessage" placeholder="写下你的留言..." required rows="4"></textarea>
+                    </div>
+                    <button class="submit-btn" onclick="submitMessage()">
+                        <span>发送留言</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                </div>
+                <div class="guestbook-messages" id="messagesContainer">
+                    <div class="empty-state">
+                        <div class="empty-icon">💬</div>
+                        <p>暂无留言</p>
+                        <p class="empty-hint">成为第一个留言的人吧！</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-logo">铁道工电系 · 星河未满</div>
+        <p class="footer-text">记录成长 · 珍藏回忆</p>
+        <p class="footer-text">从2025到未来，星河璀璨</p>
+        <div class="footer-hearts">💫</div>
+    </footer>
+
+    <script>
+        // 创建星星背景
+        function createStars() {
+            const container = document.getElementById('stars');
+            const starCount = 180;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = (Math.random() * 2 + 1) + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 4 + 's';
+                star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                container.appendChild(star);
+            }
+        }
+
+        // 创建浮动粒子
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 80;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                const size = Math.random();
+                if (size < 0.5) particle.className = 'particle small';
+                else if (size < 0.85) particle.className = 'particle medium';
+                else particle.className = 'particle large';
+                
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 8 + 10) + 's';
+                particle.style.animationDelay = Math.random() * 10 + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // 创建流星
+        function createMeteors() {
+            const container = document.getElementById('meteors');
+            
+            setInterval(() => {
+                if (document.hidden) return;
+                
+                const meteor = document.createElement('div');
+                meteor.className = 'meteor';
+                // 让流星从右侧开始
+                meteor.style.left = (Math.random() * 40 + 60) + '%';
+                meteor.style.top = Math.random() * 30 + '%';
+                meteor.style.animationDuration = (Math.random() * 0.5 + 0.8) + 's';
+                container.appendChild(meteor);
+                
+                setTimeout(() => meteor.remove(), 1600);
+            }, 3500);
+        }
+
+        // 创建爆炸粒子效果
+        function createExplosion(x, y) {
+            const container = document.getElementById('particles');
+            const particleCount = 12;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.style.position = 'absolute';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.width = '8px';
+                particle.style.height = '8px';
+                particle.style.borderRadius = '50%';
+                particle.style.background = i % 2 === 0 ? '#f5a623' : '#e94560';
+                particle.style.pointerEvents = 'none';
+                particle.style.zIndex = '9999';
+                
+                container.appendChild(particle);
+                
+                const angle = (i / particleCount) * Math.PI * 2;
+                const distance = 50 + Math.random() * 50;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                
+                particle.animate([
+                    { opacity: 1, transform: 'translate(0, 0) scale(1)' },
+                    { opacity: 0, transform: `translate(${tx}px, ${ty}px) scale(0)` }
+                ], {
+                    duration: 800,
+                    easing: 'ease-out'
+                }).onfinish = () => particle.remove();
+            }
+        }
+
+        // 数字滚动动画
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = parseInt(entry.target.dataset.target);
+                        let current = 0;
+                        const duration = 2000;
+                        const step = target / (duration / 16);
+                        
+                        const timer = setInterval(() => {
+                            current += step;
+                            if (current >= target) {
+                                entry.target.textContent = target;
+                                clearInterval(timer);
+                            } else {
+                                entry.target.textContent = Math.floor(current);
+                            }
+                        }, 16);
+                        
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            counters.forEach(counter => observer.observe(counter));
+        }
+
+        // 滚动动画观察器
+        function initScrollAnimations() {
+            const animatedElements = document.querySelectorAll(
+                '.about-text, .about-cards, .timeline-item, .achievement-card, .school-card, .guestbook-content'
+            );
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, index * 70);
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            animatedElements.forEach(el => observer.observe(el));
+        }
+
+        // 平滑滚动
+        function initSmoothScroll() {
+            document.querySelectorAll('nav a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        }
+
+        // 导航高亮
+        function initNavHighlight() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('nav a');
+            
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (scrollY >= sectionTop - 200) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + current) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        }
+
+        // 导航栏滚动效果
+        function initNavScroll() {
+            const nav = document.querySelector('nav');
+            
+            window.addEventListener('scroll', () => {
+                if (scrollY > 50) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
+                }
+            });
+        }
+
+        // 留言板功能
+        let messages = JSON.parse(localStorage.getItem('guestMessages') || '[]');
+
+        function loadMessages() {
+            const container = document.getElementById('messagesContainer');
+            
+            if (messages.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">💬</div>
+                        <p>暂无留言</p>
+                        <p class="empty-hint">成为第一个留言的人吧！</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = messages.map(msg => `
+                <div class="message-item">
+                    <div class="message-header">
+                        <span class="message-author">${escapeHtml(msg.name)}</span>
+                        <span class="message-time">${msg.time}</span>
+                    </div>
+                    <p class="message-content">${escapeHtml(msg.content)}</p>
+                </div>
+            `).join('');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function submitMessage() {
+            const nameInput = document.getElementById('guestName');
+            const messageInput = document.getElementById('guestMessage');
+            
+            const name = nameInput.value.trim();
+            const content = messageInput.value.trim();
+            
+            if (!name || !content) {
+                alert('请填写名字和留言内容！');
+                return;
+            }
+            
+            const now = new Date();
+            const time = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+            
+            messages.unshift({ name, content, time });
+            localStorage.setItem('guestMessages', JSON.stringify(messages));
+            
+            nameInput.value = '';
+            messageInput.value = '';
+            
+            loadMessages();
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            createParticles();
+            createMeteors();
+            animateCounters();
+            initScrollAnimations();
+            initSmoothScroll();
+            initNavHighlight();
+            initNavScroll();
+            loadMessages();
+            initScrollProgress();
+            initScrollTop();
+            initTypingEffect();
+            initCursorGlow();
+            initParallaxScroll();
+            initMagneticCards();
+        });
+
+        // 磁性卡片效果
+        function initMagneticCards() {
+            const cards = document.querySelectorAll('.about-card, .achievement-card, .school-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    
+                    card.style.transform = `translateY(-10px) rotateX(${y * 0.02}deg) rotateY(${-x * 0.02}deg)`;
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = '';
+                });
+            });
+        }
+
+        // 鼠标跟随光效
+        function initCursorGlow() {
+            const cursorGlow = document.createElement('div');
+            cursorGlow.className = 'cursor-glow';
+            cursorGlow.id = 'cursorGlow';
+            document.body.appendChild(cursorGlow);
+
+            document.addEventListener('mousemove', (e) => {
+                cursorGlow.style.left = e.clientX + 'px';
+                cursorGlow.style.top = e.clientY + 'px';
+            });
+
+            document.addEventListener('mouseenter', () => {
+                cursorGlow.style.opacity = '1';
+            });
+
+            document.addEventListener('mouseleave', () => {
+                cursorGlow.style.opacity = '0';
+            });
+
+            // 点击爆炸效果
+            document.addEventListener('click', (e) => {
+                createExplosion(e.clientX, e.clientY);
+            });
+        }
+
+        // 视差滚动效果
+        function initParallaxScroll() {
+            let ticking = false;
+            
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        const scrolled = window.scrollY;
+                        
+                        // 背景层视差 - 更平滑
+                        const bgGradient = document.querySelector('.bg-gradient');
+                        const glowOrbs = document.querySelector('.glow-orbs');
+                        const stars = document.getElementById('stars');
+                        const particles = document.getElementById('particles');
+                        
+                        if (bgGradient) {
+                            bgGradient.style.transform = `translateY(${scrolled * 0.08}px)`;
+                        }
+                        if (glowOrbs) {
+                            glowOrbs.style.transform = `translateY(${scrolled * 0.04}px)`;
+                        }
+                        if (stars) {
+                            stars.style.transform = `translateY(${scrolled * 0.02}px)`;
+                        }
+                        if (particles) {
+                            particles.style.transform = `translateY(${scrolled * 0.06}px)`;
+                        }
+
+                        // 英雄区域视差
+                        const hero = document.getElementById('hero');
+                        if (hero) {
+                            const heroTitle = hero.querySelector('.hero-title');
+                            if (heroTitle && scrolled < 500) {
+                                const yOffset = scrolled * 0.15;
+                                heroTitle.style.transform = `translateY(${yOffset}px)`;
+                                heroTitle.style.opacity = Math.max(0.3, 1 - (scrolled / 600));
+                            }
+                        }
+                        
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+        }
+
+        // 滚动进度条
+        function initScrollProgress() {
+            const progressBar = document.createElement('div');
+            progressBar.className = 'scroll-progress';
+            progressBar.id = 'scrollProgress';
+            document.body.prepend(progressBar);
+
+            window.addEventListener('scroll', () => {
+                const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (window.scrollY / windowHeight) * 100;
+                progressBar.style.width = scrolled + '%';
+            });
+        }
+
+        // 回到顶部按钮
+        function initScrollTop() {
+            const scrollTopBtn = document.createElement('div');
+            scrollTopBtn.className = 'scroll-top';
+            scrollTopBtn.id = 'scrollTop';
+            scrollTopBtn.title = '回到顶部';
+            document.body.appendChild(scrollTopBtn);
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 400) {
+                    scrollTopBtn.classList.add('visible');
+                } else {
+                    scrollTopBtn.classList.remove('visible');
+                }
+            });
+
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        // 打字机效果
+        function initTypingEffect() {
+            const texts = ['记录成长', '珍藏回忆', '星河璀璨', '未来可期'];
+            let textIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+
+            const heroDesc = document.querySelector('.hero-desc');
+            if (heroDesc) {
+                heroDesc.innerHTML = '';
+                const typingContainer = document.createElement('span');
+                typingContainer.className = 'typing-container';
+                const typingText = document.createElement('span');
+                typingText.className = 'typing-text';
+                typingContainer.appendChild(typingText);
+                heroDesc.appendChild(typingContainer);
+
+                function type() {
+                    const currentText = texts[textIndex];
+                    
+                    if (isDeleting) {
+                        typingText.textContent = currentText.substring(0, charIndex - 1);
+                        charIndex--;
+                    } else {
+                        typingText.textContent = currentText.substring(0, charIndex + 1);
+                        charIndex++;
+                    }
+
+                    let typeSpeed = isDeleting ? 50 : 100;
+
+                    if (!isDeleting && charIndex === currentText.length) {
+                        typeSpeed = 2000;
+                        isDeleting = true;
+                    } else if (isDeleting && charIndex === 0) {
+                        isDeleting = false;
+                        textIndex = (textIndex + 1) % texts.length;
+                        typeSpeed = 500;
+                    }
+
+                    setTimeout(type, typeSpeed);
+                }
+
+                type();
+            }
+        }
+    </script>
+</body>
+</html>
