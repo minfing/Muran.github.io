@@ -3009,34 +3009,28 @@
 
         // 平滑滚动
         function initSmoothScroll() {
-            const navLinks = document.querySelectorAll('nav a');
-            
-            navLinks.forEach(anchor => {
-                // 移除可能存在的其他点击事件监听器
-                const newAnchor = anchor.cloneNode(true);
-                anchor.parentNode.replaceChild(newAnchor, anchor);
+            document.body.addEventListener('click', function(e) {
+                const anchor = e.target.closest('nav a');
+                if (!anchor) return;
                 
-                newAnchor.addEventListener('click', function(e) {
-                    const href = this.getAttribute('href');
+                const href = anchor.getAttribute('href');
+                if (!href || href === '#' || !href.startsWith('#')) {
+                    return;
+                }
+                
+                e.preventDefault();
+                
+                const target = document.querySelector(href);
+                if (target) {
+                    const offsetTop = target.offsetTop;
+                    const navHeight = document.querySelector('nav').offsetHeight;
+                    const scrollPosition = href === '#hero' ? 0 : offsetTop - navHeight + 10;
                     
-                    if (!href || href === '#') {
-                        return;
-                    }
-                    
-                    e.preventDefault();
-                    
-                    const target = document.querySelector(href);
-                    if (target) {
-                        const offsetTop = target.offsetTop;
-                        const navHeight = document.querySelector('nav').offsetHeight;
-                        const scrollPosition = href === '#hero' ? 0 : offsetTop - navHeight + 10;
-                        
-                        window.scrollTo({
-                            top: scrollPosition,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
+                    window.scrollTo({
+                        top: scrollPosition,
+                        behavior: 'smooth'
+                    });
+                }
             });
         }
 
@@ -3489,12 +3483,10 @@
 
             overlay.addEventListener('click', closeMenu);
 
-            navLinks.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    if (navLinks.classList.contains('open')) {
-                        closeMenu();
-                    }
-                }, { passive: true });
+            navLinks.addEventListener('click', function(e) {
+                if (navLinks.classList.contains('open') && e.target.tagName === 'A') {
+                    closeMenu();
+                }
             });
 
             window.addEventListener('resize', () => {
