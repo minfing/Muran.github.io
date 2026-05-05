@@ -3009,15 +3009,17 @@
 
         // 平滑滚动
         function initSmoothScroll() {
-            document.querySelectorAll('nav a').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
+            const navLinks = document.querySelectorAll('nav a');
+            
+            navLinks.forEach(anchor => {
+                // 移除可能存在的其他点击事件监听器
+                const newAnchor = anchor.cloneNode(true);
+                anchor.parentNode.replaceChild(newAnchor, anchor);
+                
+                newAnchor.addEventListener('click', function(e) {
                     const href = this.getAttribute('href');
                     
-                    if (!href || href === '#' || href === '#hero') {
-                        if (href === '#hero') {
-                            e.preventDefault();
-                            window.scrollTo({ top: 0, behavior: 'smooth' });
-                        }
+                    if (!href || href === '#') {
                         return;
                     }
                     
@@ -3027,9 +3029,10 @@
                     if (target) {
                         const offsetTop = target.offsetTop;
                         const navHeight = document.querySelector('nav').offsetHeight;
+                        const scrollPosition = href === '#hero' ? 0 : offsetTop - navHeight + 10;
                         
                         window.scrollTo({
-                            top: offsetTop - navHeight + 10,
+                            top: scrollPosition,
                             behavior: 'smooth'
                         });
                     }
@@ -3353,11 +3356,11 @@
             createMeteors();
             animateCounters();
             initScrollAnimations();
-            initSmoothScroll();
             initGlobalScrollHandler();
             loadMessages();
             initTypingEffect();
             initMusicPlayer();
+            initSmoothScroll();
             initMobileNav();
 
             if (!isTouch) {
@@ -3487,11 +3490,11 @@
             overlay.addEventListener('click', closeMenu);
 
             navLinks.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', () => {
+                link.addEventListener('click', (e) => {
                     if (navLinks.classList.contains('open')) {
                         closeMenu();
                     }
-                });
+                }, { passive: true });
             });
 
             window.addEventListener('resize', () => {
