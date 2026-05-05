@@ -11,7 +11,7 @@
         
         body {
             font-family: 'Microsoft YaHei', 'PingFang SC', -apple-system, sans-serif;
-            background: #0a0a12;
+            background: #020205;
             color: #fff;
             overflow-x: hidden;
             line-height: 1.6;
@@ -33,142 +33,99 @@
             pointer-events: none;
         }
 
-        /* 渐变背景动画 - 重做 */
+        /* 背景 - 简约压迫高级 */
         .bg-gradient {
-            background: linear-gradient(180deg, 
-                #0a0015 0%, 
-                #1a0a2e 20%, 
-                #0f1a3a 40%, 
-                #1a0a2e 60%, 
-                #0a0015 80%, 
-                #0a0015 100%);
-            background-size: 100% 400%;
-            animation: verticalGradient 20s ease-in-out infinite;
+            position: relative;
+            background: #020205;
         }
 
-        @keyframes verticalGradient {
-            0%, 100% { 
-                background-position: 0% 50%;
-                background: linear-gradient(135deg, #0a0a12 0%, #1a0f2e 35%, #0f1a2e 70%, #0a0a12 100%);
-            }
-            25% { 
-                background-position: 25% 50%;
-                background: linear-gradient(135deg, #0a0a12 0%, #1a1a2e 35%, #0f2e1a 70%, #0a0a12 100%);
-            }
-            50% { 
-                background-position: 50% 50%;
-                background: linear-gradient(135deg, #0a0a12 0%, #0f1a2e 35%, #1a0f2e 70%, #0a0a12 100%);
-            }
-            75% { 
-                background-position: 75% 50%;
-                background: linear-gradient(135deg, #0a0a12 0%, #2e1a0f 35%, #1a1a2e 70%, #0a0a12 100%);
-            }
+        .bg-gradient::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse at 50% 0%, rgba(0,0,0,0.7) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0.85) 0%, transparent 55%),
+                radial-gradient(ellipse at 30% 50%, rgba(0,0,0,0.3) 0%, transparent 70%),
+                radial-gradient(ellipse at 70% 50%, rgba(0,0,0,0.3) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+            animation: pressureBreathe 8s ease-in-out infinite;
         }
 
-        /* 星星背景 */
+        @keyframes pressureBreathe {
+            0%, 100% { opacity: 0.85; }
+            50% { opacity: 1; }
+        }
+
         #stars {
             background: transparent;
         }
 
         .star {
             position: absolute;
-            background: #fff;
             border-radius: 50%;
-            animation: starPulse ease-in-out infinite;
-            box-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.4);
+            animation: starFade ease-in-out infinite;
         }
 
-        @keyframes starPulse {
-            0%, 100% { 
-                opacity: 0.2; 
-                transform: scale(1);
-                box-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.4);
-            }
-            50% { 
-                opacity: 1; 
-                transform: scale(1.3);
-                box-shadow: 0 0 20px rgba(255,255,255,1), 0 0 40px rgba(255,255,255,0.6);
-            }
+        .star-tier1 {
+            background: rgba(255,255,255,0.55);
+            box-shadow: 0 0 4px rgba(255,255,255,0.3), 0 0 8px rgba(255,255,255,0.1);
         }
 
-        /* 流星 */
+        .star-tier2 {
+            background: rgba(255,255,255,0.7);
+            box-shadow: 0 0 6px rgba(255,255,255,0.4), 0 0 14px rgba(180,200,255,0.2);
+        }
+
+        .star-tier3 {
+            background: rgba(255,255,255,0.85);
+            box-shadow: 0 0 8px rgba(255,255,255,0.5), 0 0 20px rgba(180,200,255,0.25), 0 0 35px rgba(180,200,255,0.1);
+        }
+
+        @keyframes starFade {
+            0%, 100% { opacity: 0.15; transform: scale(1); }
+            30% { opacity: 0.6; transform: scale(1.2); }
+            60% { opacity: 0.85; transform: scale(1.4); }
+            80% { opacity: 0.3; transform: scale(1.05); }
+        }
+
         .meteor {
             position: absolute;
-            width: 2px;
-            height: 120px;
-            background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,1), rgba(245,166,35,0.8), rgba(231,76,60,0.4));
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(180deg, transparent, rgba(255,255,255,0.4), transparent);
             animation: meteorShoot linear forwards;
-            border-radius: 1px;
-            box-shadow: 0 0 15px rgba(245,166,35,0.6), 0 0 30px rgba(231,76,60,0.3);
         }
 
         @keyframes meteorShoot {
             0% { 
                 transform: translateX(0) translateY(0) rotate(135deg); 
-                opacity: 1; 
+                opacity: 0;
             }
-            70% { opacity: 1; }
+            15% { opacity: 0.6; }
+            70% { opacity: 0.6; }
             100% { 
-                transform: translateX(-500px) translateY(500px) rotate(135deg); 
+                transform: translateX(-400px) translateY(400px) rotate(135deg); 
                 opacity: 0; 
             }
         }
 
-        /* 光晕效果 - 重做 */
         .glow-orbs {
             background: 
-                radial-gradient(circle at 20% 30%, rgba(231,76,60,0.18) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(245,166,35,0.15) 0%, transparent 45%),
-                radial-gradient(circle at 50% 70%, rgba(52,152,219,0.12) 0%, transparent 55%),
-                radial-gradient(circle at 15% 80%, rgba(155,89,182,0.1) 0%, transparent 40%),
-                radial-gradient(circle at 85% 60%, rgba(26,188,156,0.08) 0%, transparent 50%);
-            animation: orbsRotate 25s ease-in-out infinite;
+                radial-gradient(circle at 50% 30%, rgba(255,255,255,0.015) 0%, transparent 50%),
+                radial-gradient(circle at 30% 70%, rgba(255,255,255,0.01) 0%, transparent 50%),
+                radial-gradient(circle at 70% 70%, rgba(255,255,255,0.01) 0%, transparent 50%);
+            animation: orbSlowFloat 30s ease-in-out infinite;
         }
 
-        @keyframes orbsRotate {
-            0%, 100% { transform: translateY(0) scale(1); opacity: 1; }
-            25% { transform: translateY(-15px) scale(1.05); opacity: 0.95; }
-            50% { transform: translateY(10px) scale(0.98); opacity: 1; }
-            75% { transform: translateY(-25px) scale(1.02); opacity: 0.9; }
+        @keyframes orbSlowFloat {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0.6; }
+            50% { transform: translateY(-20px) scale(1.03); opacity: 1; }
         }
 
-        /* 浮动粒子 */
         #particles {
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            animation: float-particle ease-in-out infinite;
-            filter: blur(0.5px);
-        }
-
-        .particle.small {
-            width: 2px;
-            height: 2px;
-            background: rgba(255,255,255,0.8);
-        }
-
-        .particle.medium {
-            width: 4px;
-            height: 4px;
-            background: rgba(245,166,35,0.6);
-            box-shadow: 0 0 10px rgba(245,166,35,0.5);
-        }
-
-        .particle.large {
-            width: 6px;
-            height: 6px;
-            background: rgba(233,69,96,0.7);
-            box-shadow: 0 0 15px rgba(233,69,96,0.6);
-        }
-
-        @keyframes float-particle {
-            0%, 100% { transform: translateY(0) translateX(0) scale(1); opacity: 0.5; }
-            25% { transform: translateY(-20px) translateX(10px) scale(1.1); opacity: 0.8; }
-            50% { transform: translateY(-10px) translateX(-10px) scale(0.9); opacity: 0.6; }
-            75% { transform: translateY(-30px) translateX(5px) scale(1.05); opacity: 0.7; }
+            display: none;
         }
 
         /* 导航栏 */
@@ -262,6 +219,38 @@
             color: #fff;
             background: linear-gradient(135deg, rgba(245,166,35,0.18), rgba(233,69,96,0.18));
             box-shadow: 0 4px 15px rgba(233,69,96,0.15);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: #fff;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
         }
 
         /* 通用容器 */
@@ -1419,11 +1408,6 @@
             50% { box-shadow: 0 5px 40px rgba(245,166,35,0.6); }
         }
 
-        /* 浮动星星增强 */
-        .particle {
-            filter: blur(1px);
-        }
-
         /* 视差滚动容器 */
         section {
             transform-style: preserve-3d;
@@ -1498,72 +1482,6 @@
             backdrop-filter: blur(30px);
         }
 
-        /* 动态背景增强 */
-        .bg-gradient {
-            animation: verticalGradient 15s ease-in-out infinite;
-            transition: all 0.5s ease;
-        }
-
-        @keyframes verticalGradient {
-            0%, 100% { 
-                background: linear-gradient(135deg, #0a0a12 0%, #1a0f2e 35%, #0f1a2e 70%, #0a0a12 100%);
-            }
-            25% { 
-                background: linear-gradient(135deg, #0a0a12 0%, #1a1a2e 35%, #0f2e1a 70%, #0a0a12 100%);
-            }
-            50% { 
-                background: linear-gradient(135deg, #0a0a12 0%, #0f1a2e 35%, #1a0f2e 70%, #0a0a12 100%);
-            }
-            75% { 
-                background: linear-gradient(135deg, #0a0a12 0%, #2e1a0f 35%, #1a1a2e 70%, #0a0a12 100%);
-            }
-        }
-
-        /* 增强星星闪烁 */
-        .star {
-            animation: starPulse 3s ease-in-out infinite;
-        }
-
-        @keyframes starPulse {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.2); }
-        }
-
-        /* 优化粒子动画 */
-        .particle {
-            animation: float-particle 12s ease-in-out infinite;
-            filter: blur(0.5px);
-        }
-
-        @keyframes float-particle {
-            0%, 100% { transform: translateY(0) translateX(0) scale(1); opacity: 0.5; }
-            25% { transform: translateY(-20px) translateX(10px) scale(1.1); opacity: 0.8; }
-            50% { transform: translateY(-10px) translateX(-10px) scale(0.9); opacity: 0.6; }
-            75% { transform: translateY(-30px) translateX(5px) scale(1.05); opacity: 0.7; }
-        }
-
-        /* 优化流星效果 */
-        .meteor {
-            animation: meteorFall 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-        }
-
-        @keyframes meteorFall {
-            0% { transform: translate(0, 0) rotate(45deg); opacity: 1; }
-            70% { opacity: 1; }
-            100% { transform: translate(200px, 300px) rotate(45deg); opacity: 0; }
-        }
-
-        /* 光晕平滑波动 */
-        .glow-orbs {
-            animation: orbFloat 10s ease-in-out infinite;
-        }
-
-        @keyframes orbFloat {
-            0%, 100% { transform: translateY(0) scale(1); }
-            33% { transform: translateY(-30px) scale(1.05); }
-            66% { transform: translateY(20px) scale(0.98); }
-        }
-
         /* 现代化UI增强 */
         .about-card, .achievement-card, .school-card {
             position: relative;
@@ -1624,59 +1542,234 @@
             left: 100%;
         }
 
-        /* 响应式 */
-        @media (max-width: 968px) {
-            nav { padding: 15px 25px; }
-            .nav-links { gap: 15px; }
-            .nav-links a { font-size: 0.8rem; padding: 5px 8px; }
-            
-            .hero-title { font-size: 3.2rem; }
-            .hero-title .line2 { font-size: 2rem; letter-spacing: 5px; }
-            .hero-stats { flex-direction: column; gap: 25px; }
+        /* ========== 响应式 ========== */
+
+        /* 平板横屏 768-1024px */
+        @media (max-width: 1024px) {
+            nav { padding: 16px 35px; }
+            nav.scrolled { padding: 10px 35px; }
+            .nav-links { gap: 28px; }
+            .nav-links a { font-size: 0.88rem; padding: 7px 14px; }
+
+            .container { padding: 0 25px; }
+
+            .hero-title { font-size: 4.2rem; }
+            .hero-title .line2 { font-size: 2.4rem; letter-spacing: 8px; }
+            .hero-bg-glow { width: 500px; height: 500px; }
+            .hero-stats { gap: 50px; }
+            .stat-item { padding: 25px 30px; }
+
+            .section-header { margin-bottom: 65px; }
+            .section-title { font-size: 2.6rem; }
+
+            .about-content { gap: 50px; }
+
+            .achievements-grid { max-width: 650px; }
+            .achievement-card { padding: 40px 30px; }
+
+            .school-content { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 22px; }
+            .school-card { padding: 28px; }
+
+            .guestbook-content { gap: 40px; }
+            .guestbook-form { padding: 30px; }
+        }
+
+        /* 平板竖屏 / 大手机 <= 768px */
+        @media (max-width: 768px) {
+            nav { padding: 14px 20px; }
+            nav.scrolled { padding: 10px 20px; }
+            .nav-logo { font-size: 1.2rem; }
+
+            .hamburger { display: flex; }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 260px;
+                height: 100vh;
+                flex-direction: column;
+                gap: 8px;
+                background: rgba(5, 5, 10, 0.97);
+                backdrop-filter: blur(40px);
+                padding: 90px 30px 30px;
+                transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                border-left: 1px solid rgba(255,255,255,0.06);
+                z-index: 1000;
+            }
+
+            .nav-links.open { right: 0; }
+
+            .nav-links a {
+                font-size: 1.05rem;
+                padding: 14px 20px;
+                border-radius: 12px;
+                display: block;
+                text-align: left;
+            }
+
+            .nav-links a::before { display: none; }
+
+            .mobile-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 999;
+            }
+
+            .mobile-overlay.active { display: block; }
+
+            section { padding: 90px 0; }
+            .container { padding: 0 20px; }
+
+            .hero-subtitle { font-size: 0.8rem; letter-spacing: 8px; margin-bottom: 20px; }
+            .hero-title { font-size: 3rem; letter-spacing: -2px; }
+            .hero-title .line2 { font-size: 1.7rem; letter-spacing: 5px; margin-top: 10px; }
+            .hero-desc { font-size: 0.95rem; margin-bottom: 45px; letter-spacing: 2px; }
+            .hero-bg-glow { width: 350px; height: 350px; }
+            .hero-stats { flex-direction: column; gap: 16px; width: 100%; }
+            .stat-item { padding: 20px 25px; border-radius: 18px; }
             .stat-item::after { display: none; }
-            
-            .about-content { grid-template-columns: 1fr; gap: 50px; }
-            .achievements-grid { grid-template-columns: 1fr; }
-            .guestbook-content { grid-template-columns: 1fr; gap: 40px; }
-            
-            .timeline-track { left: 20px; }
+            .stat-number { font-size: 2.6rem; }
+            .stat-label { font-size: 0.78rem; }
+
+            .section-header { margin-bottom: 50px; }
+            .section-tag { font-size: 0.75rem; letter-spacing: 5px; }
+            .section-title { font-size: 2.2rem; }
+            .section-title::after { width: 60px; height: 3px; bottom: -10px; }
+
+            .about-content { grid-template-columns: 1fr; gap: 40px; }
+            .about-text p { font-size: 1rem; line-height: 1.9; margin-bottom: 18px; }
+            .about-cards { grid-template-columns: 1fr 1fr; gap: 14px; }
+            .about-card { padding: 25px 18px; min-height: 160px; border-radius: 18px; }
+            .about-card-icon { font-size: 2.2rem; margin-bottom: 12px; }
+            .about-card h3 { font-size: 1.05rem; }
+            .about-card p { font-size: 0.82rem; }
+            .qrcode-img { width: 80px; height: 80px; }
+            .qrcode-box { padding: 6px; }
+            .about-card::before { display: none; }
+
+            .timeline-track { left: 18px; }
             .timeline-item, .timeline-item:nth-child(even) {
-                padding-left: 65px;
+                padding-left: 55px;
                 padding-right: 0;
                 justify-content: flex-start;
             }
-            .timeline-dot, .timeline-item:nth-child(even) .timeline-dot { left: 20px; }
-            .timeline-card { max-width: 100%; }
-            
-            .section-title { font-size: 2.3rem; }
-        }
+            .timeline-dot, .timeline-item:nth-child(even) .timeline-dot {
+                left: 18px;
+                width: 16px;
+                height: 16px;
+                border-width: 3px;
+            }
+            .timeline-card { max-width: 100%; padding: 22px; border-radius: 18px; }
+            .timeline-card h3 { font-size: 1.2rem; }
+            .timeline-card p { font-size: 0.88rem; }
+            .timeline-date-badge { font-size: 0.78rem; padding: 6px 16px; }
+            .timeline-item { margin-bottom: 45px; }
 
-        @media (max-width: 640px) {
-            nav { padding: 12px 15px; }
-            .nav-links { gap: 10px; }
-            .nav-links a { font-size: 0.75rem; padding: 4px 6px; }
-            .nav-logo { font-size: 1rem; }
-            
-            .hero-title { font-size: 2.5rem; }
-            .hero-title .line2 { font-size: 1.5rem; letter-spacing: 3px; }
-            .hero-desc { font-size: 1rem; }
-            
-            .guestbook-form { padding: 25px; }
-            .form-group input, .form-group textarea { padding: 14px 16px; }
-            .submit-btn { padding: 16px 30px; }
-        }
+            .achievements-grid { grid-template-columns: 1fr; max-width: 100%; gap: 20px; }
+            .achievement-card { padding: 35px 25px; border-radius: 22px; }
+            .achievement-icon { font-size: 3rem; margin-bottom: 14px; }
+            .achievement-title { font-size: 1.25rem; }
+            .achievement-desc { font-size: 0.9rem; }
 
-        @media (max-width: 480px) {
-            .hero-stats { gap: 20px; }
-            .stat-number { font-size: 2.8rem; }
-            .about-cards { grid-template-columns: 1fr; }
-            .school-content { grid-template-columns: 1fr; }
-            
-            .section-tag { font-size: 0.75rem; }
-            .section-title { font-size: 2rem; }
-            
-            .message-item { padding: 20px; }
+            .school-content { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+            .school-card { padding: 22px; border-radius: 18px; }
+            .school-icon { font-size: 2.2rem; margin-bottom: 12px; }
+            .school-card h3 { font-size: 1.1rem; margin-bottom: 10px; }
+            .school-card p { font-size: 0.85rem; line-height: 1.7; }
+
+            .guestbook-content { grid-template-columns: 1fr; gap: 30px; }
+            .guestbook-form { padding: 25px; border-radius: 20px; }
+            .form-group { margin-bottom: 18px; }
+            .form-group input, .form-group textarea { padding: 14px 16px; font-size: 0.95rem; border-radius: 12px; }
+            .form-group textarea { min-height: 100px; }
+            .submit-btn { padding: 16px 30px; font-size: 1rem; border-radius: 14px; }
+            .guestbook-messages { max-height: 400px; }
+            .message-item { padding: 18px; border-radius: 16px; margin-bottom: 12px; }
+            .message-author { font-size: 0.95rem; }
+            .message-content { font-size: 0.9rem; }
             .empty-icon { font-size: 3rem; }
+
+            footer { padding: 80px 20px 50px; }
+            .footer-logo { font-size: 1.8rem; }
+            .footer-text { font-size: 0.85rem; }
+
+            .scroll-top { width: 44px; height: 44px; bottom: 20px; right: 20px; }
+            .scroll-top::before { font-size: 20px; }
+
+            .cursor-glow { display: none; }
+
+            .about-card:hover, .achievement-card:hover, .school-card:hover, .timeline-card:hover {
+                transform: none;
+            }
+        }
+
+        /* 手机 320-480px */
+        @media (max-width: 480px) {
+            nav { padding: 12px 15px; }
+            nav.scrolled { padding: 8px 15px; }
+            .nav-logo { font-size: 1.05rem; letter-spacing: 1px; }
+            .nav-links { width: 75vw; padding: 80px 20px 25px; }
+            .nav-links a { font-size: 1rem; padding: 12px 16px; }
+
+            section { padding: 70px 0; }
+            .container { padding: 0 16px; }
+
+            .hero-subtitle { font-size: 0.72rem; letter-spacing: 5px; }
+            .hero-title { font-size: 2.2rem; letter-spacing: -1px; }
+            .hero-title .line2 { font-size: 1.3rem; letter-spacing: 3px; }
+            .hero-desc { font-size: 0.85rem; margin-bottom: 35px; }
+            .hero-bg-glow { width: 240px; height: 240px; }
+            .hero-stats { gap: 12px; }
+            .stat-item { padding: 16px 20px; border-radius: 14px; }
+            .stat-number { font-size: 2.2rem; }
+            .stat-label { font-size: 0.72rem; }
+
+            .section-header { margin-bottom: 40px; }
+            .section-tag { font-size: 0.7rem; letter-spacing: 4px; margin-bottom: 12px; }
+            .section-title { font-size: 1.8rem; }
+
+            .about-content { gap: 30px; }
+            .about-text p { font-size: 0.9rem; line-height: 1.75; }
+            .about-cards { grid-template-columns: 1fr; gap: 10px; }
+            .about-card { padding: 20px 16px; min-height: auto; }
+
+            .timeline-track { left: 14px; }
+            .timeline-item, .timeline-item:nth-child(even) { padding-left: 44px; }
+            .timeline-dot, .timeline-item:nth-child(even) .timeline-dot {
+                left: 14px;
+                width: 13px;
+                height: 13px;
+                border-width: 2px;
+            }
+            .timeline-card { padding: 18px; }
+            .timeline-card h3 { font-size: 1.1rem; }
+            .timeline-card p { font-size: 0.82rem; }
+            .timeline-date-badge { font-size: 0.72rem; padding: 5px 14px; }
+            .timeline-item { margin-bottom: 35px; }
+
+            .achievement-card { padding: 28px 20px; border-radius: 18px; }
+            .achievement-icon { font-size: 2.5rem; }
+            .achievement-title { font-size: 1.15rem; }
+
+            .school-content { grid-template-columns: 1fr; gap: 12px; }
+            .school-card { padding: 18px; }
+
+            .guestbook-form { padding: 20px; }
+            .form-group input, .form-group textarea { padding: 12px 14px; font-size: 0.9rem; }
+            .submit-btn { padding: 14px 24px; font-size: 0.95rem; }
+            .guestbook-messages { max-height: 350px; padding-right: 5px; }
+            .message-item { padding: 15px; }
+            .empty-state { padding: 50px 15px; }
+            .empty-icon { font-size: 2.5rem; }
+
+            footer { padding: 60px 15px 40px; }
+            .footer-logo { font-size: 1.5rem; }
+
+            .scroll-top { width: 40px; height: 40px; bottom: 16px; right: 16px; }
+            .scroll-top::before { font-size: 18px; }
         }
     </style>
 </head>
@@ -1690,7 +1783,12 @@
 
     <nav>
         <div class="nav-logo">铁道工电系</div>
-        <div class="nav-links">
+        <button class="hamburger" id="hamburger" aria-label="菜单">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="nav-links" id="navLinks">
             <a href="#hero" class="active">首页</a>
             <a href="#about">关于我们</a>
             <a href="#timeline">发展历程</a>
@@ -1933,39 +2031,38 @@
         // 创建星星背景
         function createStars() {
             const container = document.getElementById('stars');
-            const starCount = 180;
+            const starCount = 50;
             
             for (let i = 0; i < starCount; i++) {
                 const star = document.createElement('div');
-                star.className = 'star';
+                const tierRand = Math.random();
+                let tier, sizeRange;
+                
+                if (tierRand < 0.55) {
+                    tier = 'star-tier1';
+                    sizeRange = [1, 2];
+                } else if (tierRand < 0.85) {
+                    tier = 'star-tier2';
+                    sizeRange = [2, 3.5];
+                } else {
+                    tier = 'star-tier3';
+                    sizeRange = [3, 5];
+                }
+                
+                star.className = `star ${tier}`;
                 star.style.left = Math.random() * 100 + '%';
                 star.style.top = Math.random() * 100 + '%';
-                star.style.width = (Math.random() * 2 + 1) + 'px';
-                star.style.height = star.style.width;
-                star.style.animationDelay = Math.random() * 4 + 's';
-                star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                const size = Math.random() * (sizeRange[1] - sizeRange[0]) + sizeRange[0];
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.animationDelay = Math.random() * 6 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 3) + 's';
                 container.appendChild(star);
             }
         }
 
         // 创建浮动粒子
         function createParticles() {
-            const container = document.getElementById('particles');
-            const particleCount = 80;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                const size = Math.random();
-                if (size < 0.5) particle.className = 'particle small';
-                else if (size < 0.85) particle.className = 'particle medium';
-                else particle.className = 'particle large';
-                
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDuration = (Math.random() * 8 + 10) + 's';
-                particle.style.animationDelay = Math.random() * 10 + 's';
-                container.appendChild(particle);
-            }
         }
 
         // 创建流星
@@ -1984,17 +2081,16 @@
                 container.appendChild(meteor);
                 
                 setTimeout(() => meteor.remove(), 1600);
-            }, 3500);
+            }, 15000);
         }
 
         // 创建爆炸粒子效果
         function createExplosion(x, y) {
-            const container = document.getElementById('particles');
             const particleCount = 12;
             
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
-                particle.style.position = 'absolute';
+                particle.style.position = 'fixed';
                 particle.style.left = x + 'px';
                 particle.style.top = y + 'px';
                 particle.style.width = '8px';
@@ -2004,7 +2100,7 @@
                 particle.style.pointerEvents = 'none';
                 particle.style.zIndex = '9999';
                 
-                container.appendChild(particle);
+                document.body.appendChild(particle);
                 
                 const angle = (i / particleCount) * Math.PI * 2;
                 const distance = 50 + Math.random() * 50;
@@ -2179,6 +2275,8 @@
 
         // 初始化
         document.addEventListener('DOMContentLoaded', () => {
+            const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
             createStars();
             createParticles();
             createMeteors();
@@ -2191,10 +2289,59 @@
             initScrollProgress();
             initScrollTop();
             initTypingEffect();
-            initCursorGlow();
+            initMobileNav();
             initParallaxScroll();
-            initMagneticCards();
+
+            if (!isTouch) {
+                initCursorGlow();
+                initMagneticCards();
+            }
         });
+
+        function initMobileNav() {
+            const hamburger = document.getElementById('hamburger');
+            const navLinks = document.getElementById('navLinks');
+
+            const overlay = document.createElement('div');
+            overlay.className = 'mobile-overlay';
+            document.body.appendChild(overlay);
+
+            function closeMenu() {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('open');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            function openMenu() {
+                hamburger.classList.add('active');
+                navLinks.classList.add('open');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            hamburger.addEventListener('click', () => {
+                if (navLinks.classList.contains('open')) {
+                    closeMenu();
+                } else {
+                    openMenu();
+                }
+            });
+
+            overlay.addEventListener('click', closeMenu);
+
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    closeMenu();
+                });
+            });
+
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768 && navLinks.classList.contains('open')) {
+                    closeMenu();
+                }
+            });
+        }
 
         // 磁性卡片效果
         function initMagneticCards() {
@@ -2254,19 +2401,15 @@
                         const bgGradient = document.querySelector('.bg-gradient');
                         const glowOrbs = document.querySelector('.glow-orbs');
                         const stars = document.getElementById('stars');
-                        const particles = document.getElementById('particles');
                         
                         if (bgGradient) {
-                            bgGradient.style.transform = `translateY(${scrolled * 0.08}px)`;
+                            bgGradient.style.transform = `translateY(${scrolled * 0.05}px)`;
                         }
                         if (glowOrbs) {
-                            glowOrbs.style.transform = `translateY(${scrolled * 0.04}px)`;
+                            glowOrbs.style.transform = `translateY(${scrolled * 0.03}px)`;
                         }
                         if (stars) {
                             stars.style.transform = `translateY(${scrolled * 0.02}px)`;
-                        }
-                        if (particles) {
-                            particles.style.transform = `translateY(${scrolled * 0.06}px)`;
                         }
 
                         // 英雄区域视差
