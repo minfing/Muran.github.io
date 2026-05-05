@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>铁道工电系 & 星河未满</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -31,6 +32,7 @@
             height: 100%;
             z-index: 0;
             pointer-events: none;
+            will-change: transform;
         }
 
         /* 背景 - 简约压迫高级 */
@@ -122,10 +124,6 @@
         @keyframes orbSlowFloat {
             0%, 100% { transform: translateY(0) scale(1); opacity: 0.6; }
             50% { transform: translateY(-20px) scale(1.03); opacity: 1; }
-        }
-
-        #particles {
-            display: none;
         }
 
         /* 导航栏 */
@@ -1573,16 +1571,6 @@
             50% { border-color: rgba(245,166,35,0.8); }
         }
 
-        /* 时间轴交互 */
-        .timeline-card {
-            transition: all 0.4s ease;
-        }
-
-        .timeline-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 50px rgba(233,69,96,0.3);
-        }
-
         /* 鼠标跟随光效 */
         .cursor-glow {
             position: fixed;
@@ -1594,37 +1582,7 @@
             transform: translate(-50%, -50%);
             z-index: 9998;
             transition: opacity 0.3s ease;
-        }
-
-        /* 卡片发光边框 */
-        .about-card, .achievement-card, .school-card {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .about-card::before, .achievement-card::before, .school-card::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, #f5a623, #e94560, #f5a623, #e94560);
-            border-radius: inherit;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            z-index: -1;
-            background-size: 400% 400%;
-            animation: borderGlow 3s ease infinite;
-        }
-
-        @keyframes borderGlow {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .about-card:hover::before, .achievement-card:hover::before, .school-card:hover::before {
-            opacity: 1;
+            will-change: transform, opacity, left, top;
         }
 
         /* 3D卡片效果 */
@@ -1737,9 +1695,10 @@
             position: relative;
             overflow: hidden;
             border-radius: 20px !important;
+            will-change: transform;
         }
 
-        .about-card::before, .achievement-card::before, .school-card::before {
+        .about-card::after, .achievement-card::after, .school-card::after {
             content: '';
             position: absolute;
             top: 0;
@@ -1748,48 +1707,126 @@
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
             transition: left 0.6s ease;
+            pointer-events: none;
         }
 
-        .about-card:hover::before, .achievement-card:hover::before, .school-card:hover::before {
+        .about-card:hover::after, .achievement-card:hover::after, .school-card:hover::after {
             left: 100%;
         }
 
-        .section-title {
-            position: relative;
-            display: inline-block;
+        /* ===== APlayer 深色主题适配 ===== */
+        .music-section {
+            padding: 60px 0 100px;
         }
 
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background: linear-gradient(90deg, #f5a623, #e94560);
-            border-radius: 2px;
+        .music-container {
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        /* 按钮优化 */
-        .submit-btn {
-            position: relative;
-            overflow: hidden;
+        .aplayer {
+            background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.02) 100%) !important;
+            border: 1px solid rgba(255,255,255,0.08) !important;
+            border-radius: 20px !important;
+            font-family: inherit !important;
         }
 
-        .submit-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s ease;
+        .aplayer .aplayer-info .aplayer-music .aplayer-title {
+            color: #fff !important;
+            font-size: 0.95rem !important;
         }
 
-        .submit-btn:hover::before {
-            left: 100%;
+        .aplayer .aplayer-info .aplayer-music .aplayer-author {
+            color: rgba(255,255,255,0.45) !important;
+            font-size: 0.82rem !important;
+        }
+
+        .aplayer .aplayer-list ol li {
+            background: transparent !important;
+            border-top: 1px solid rgba(255,255,255,0.05) !important;
+        }
+
+        .aplayer .aplayer-list ol li.aplayer-list-light {
+            background: rgba(233,69,96,0.1) !important;
+        }
+
+        .aplayer .aplayer-list ol li .aplayer-list-author,
+        .aplayer .aplayer-list ol li .aplayer-list-index {
+            color: rgba(255,255,255,0.45) !important;
+        }
+
+        .aplayer .aplayer-list ol li .aplayer-list-title {
+            color: rgba(255,255,255,0.8) !important;
+        }
+
+        .aplayer .aplayer-list ol li.aplayer-list-light .aplayer-list-title {
+            color: #fff !important;
+        }
+
+        .aplayer .aplayer-info .aplayer-controller .aplayer-time .aplayer-icon path {
+            fill: rgba(255,255,255,0.7);
+        }
+
+        .aplayer .aplayer-info .aplayer-controller .aplayer-time .aplayer-icon:hover path {
+            fill: #f5a623;
+        }
+
+        .aplayer .aplayer-info .aplayer-controller .aplayer-bar-wrap .aplayer-bar,
+        .aplayer .aplayer-list-title {
+            background: rgba(255,255,255,0.06) !important;
+        }
+
+        .aplayer .aplayer-info .aplayer-controller .aplayer-bar-wrap .aplayer-bar .aplayer-loaded {
+            background: rgba(255,255,255,0.15) !important;
+        }
+
+        .aplayer .aplayer-info .aplayer-controller .aplayer-bar-wrap .aplayer-bar .aplayer-played {
+            background: linear-gradient(90deg, #f5a623, #e94560) !important;
+        }
+
+        .aplayer .aplayer-info .aplayer-controller .aplayer-bar-wrap .aplayer-bar .aplayer-played .aplayer-thumb {
+            background: #fff !important;
+            box-shadow: 0 0 8px rgba(245,166,35,0.5);
+        }
+
+        .aplayer .aplayer-volume-wrap .aplayer-volume-bar-wrap .aplayer-volume-bar .aplayer-volume {
+            background: linear-gradient(90deg, #f5a623, #e94560) !important;
+        }
+
+        .aplayer .aplayer-info .aplayer-controller .aplayer-time .aplayer-volume-icon path {
+            fill: rgba(255,255,255,0.5);
+        }
+
+        .aplayer .aplayer-lrc {
+            color: rgba(255,255,255,0.7) !important;
+        }
+
+        .aplayer .aplayer-lrc p.aplayer-lrc-current {
+            color: #f5a623 !important;
+        }
+
+        .aplayer .aplayer-lrc::before,
+        .aplayer .aplayer-lrc::after {
+            background: transparent !important;
+        }
+
+        .aplayer .aplayer-miniswitcher .aplayer-icon path {
+            fill: rgba(255,255,255,0.5);
+        }
+
+        .aplayer .aplayer-notice {
+            background: rgba(233,69,96,0.15) !important;
+            color: #e94560 !important;
+            border: 1px solid rgba(233,69,96,0.2) !important;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .music-section { padding: 40px 0 70px; }
+            .music-container { max-width: 100%; }
+            .aplayer { border-radius: 16px !important; }
+            .aplayer .aplayer-info .aplayer-music .aplayer-title { font-size: 0.88rem !important; }
+            .aplayer .aplayer-info .aplayer-music .aplayer-author { font-size: 0.76rem !important; }
         }
 
         /* ========== 响应式 ========== */
@@ -2037,7 +2074,6 @@
     <div class="bg-layer bg-gradient"></div>
     <div class="bg-layer glow-orbs"></div>
     <div class="bg-layer" id="stars"></div>
-    <div class="bg-layer" id="particles"></div>
     <div class="bg-layer" id="meteors"></div>
 
     <nav>
@@ -2279,6 +2315,22 @@
         </div>
     </section>
 
+    <section id="music" class="music-section">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-tag">MUSIC</p>
+                <h2 class="section-title">音乐播放器</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="music-container" id="musicPlayer">
+                <div class="empty-state" id="musicLoading">
+                    <div class="empty-icon">🎵</div>
+                    <p>正在加载歌单...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer>
         <div class="footer-logo" id="footerLogo" title="双击进入管理员模式">铁道工电系 · 星河未满</div>
         <p class="footer-text">记录成长 · 珍藏回忆</p>
@@ -2287,6 +2339,46 @@
         <div class="footer-hearts">💫</div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+    <script>
+        function initMusicPlayer() {
+            var container = document.getElementById('musicPlayer');
+            var apiUrl = 'https://api.i-meto.com/meting/api?server=tencent&type=playlist&id=9708433309';
+
+            fetch(apiUrl)
+                .then(function(res) { return res.json(); })
+                .then(function(data) {
+                    if (!data || !data.length) {
+                        throw new Error('empty');
+                    }
+                    document.getElementById('musicLoading').style.display = 'none';
+                    new APlayer({
+                        container: container,
+                        fixed: false,
+                        autoplay: false,
+                        theme: '#e94560',
+                        loop: 'all',
+                        order: 'random',
+                        preload: 'auto',
+                        volume: 0.7,
+                        listFolded: true,
+                        listMaxHeight: 360,
+                        lrcType: 1,
+                        audio: data
+                    });
+                })
+                .catch(function() {
+                    document.getElementById('musicLoading').innerHTML =
+                        '<div class="empty-icon">⚠️</div>' +
+                        '<p>歌单加载失败</p>' +
+                        '<p class="empty-hint">请检查歌单是否为公开状态，或稍后重试</p>';
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initMusicPlayer();
+        });
+    </script>
     <script>
         // 创建星星背景
         function createStars() {
@@ -2321,27 +2413,30 @@
             }
         }
 
-        // 创建浮动粒子
-        function createParticles() {
-        }
-
         // 创建流星
         function createMeteors() {
             const container = document.getElementById('meteors');
             
-            setInterval(() => {
-                if (document.hidden) return;
-                
+            function spawnMeteor() {
                 const meteor = document.createElement('div');
                 meteor.className = 'meteor';
-                // 让流星从右侧开始
                 meteor.style.left = (Math.random() * 40 + 60) + '%';
                 meteor.style.top = Math.random() * 30 + '%';
                 meteor.style.animationDuration = (Math.random() * 0.5 + 0.8) + 's';
                 container.appendChild(meteor);
-                
                 setTimeout(() => meteor.remove(), 1600);
-            }, 15000);
+            }
+
+            let meteorTimer = setInterval(spawnMeteor, 15000);
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    clearInterval(meteorTimer);
+                    meteorTimer = null;
+                } else if (!meteorTimer) {
+                    meteorTimer = setInterval(spawnMeteor, 15000);
+                }
+            });
         }
 
         // 创建爆炸粒子效果
@@ -2439,38 +2534,66 @@
             });
         }
 
-        // 导航高亮
-        function initNavHighlight() {
+        function initGlobalScrollHandler() {
             const sections = document.querySelectorAll('section');
             const navLinks = document.querySelectorAll('nav a');
-            
-            window.addEventListener('scroll', () => {
-                let current = '';
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    if (scrollY >= sectionTop - 200) {
-                        current = section.getAttribute('id');
-                    }
-                });
-                
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === '#' + current) {
-                        link.classList.add('active');
-                    }
-                });
-            });
-        }
-
-        // 导航栏滚动效果
-        function initNavScroll() {
             const nav = document.querySelector('nav');
-            
+            const bgGradient = document.querySelector('.bg-gradient');
+            const glowOrbs = document.querySelector('.glow-orbs');
+            const starsEl = document.getElementById('stars');
+            const hero = document.getElementById('hero');
+            const heroTitle = hero ? hero.querySelector('.hero-title') : null;
+
+            const progressBar = document.createElement('div');
+            progressBar.className = 'scroll-progress';
+            progressBar.id = 'scrollProgress';
+            document.body.prepend(progressBar);
+
+            const scrollTopBtn = document.createElement('div');
+            scrollTopBtn.className = 'scroll-top';
+            scrollTopBtn.id = 'scrollTop';
+            scrollTopBtn.title = '回到顶部';
+            document.body.appendChild(scrollTopBtn);
+
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            let ticking = false;
+
             window.addEventListener('scroll', () => {
-                if (scrollY > 50) {
-                    nav.classList.add('scrolled');
-                } else {
-                    nav.classList.remove('scrolled');
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        const scrolled = window.scrollY;
+                        const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+
+                        nav.classList.toggle('scrolled', scrolled > 50);
+
+                        let current = '';
+                        sections.forEach(section => {
+                            if (scrolled >= section.offsetTop - 200) {
+                                current = section.getAttribute('id');
+                            }
+                        });
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+                        });
+
+                        if (bgGradient) bgGradient.style.transform = `translateY(${scrolled * 0.05}px)`;
+                        if (glowOrbs) glowOrbs.style.transform = `translateY(${scrolled * 0.03}px)`;
+                        if (starsEl) starsEl.style.transform = `translateY(${scrolled * 0.02}px)`;
+
+                        if (heroTitle && scrolled < 500) {
+                            heroTitle.style.transform = `translateY(${scrolled * 0.15}px)`;
+                            heroTitle.style.opacity = Math.max(0.3, 1 - (scrolled / 600));
+                        }
+
+                        progressBar.style.width = windowHeight > 0 ? (scrolled / windowHeight) * 100 + '%' : '0%';
+                        scrollTopBtn.classList.toggle('visible', scrolled > 400);
+
+                        ticking = false;
+                    });
+                    ticking = true;
                 }
             });
         }
@@ -2527,9 +2650,7 @@
         }
 
         function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
+            return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
         function deleteMessage(index) {
@@ -2615,19 +2736,14 @@
             const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
             createStars();
-            createParticles();
             createMeteors();
             animateCounters();
             initScrollAnimations();
             initSmoothScroll();
-            initNavHighlight();
-            initNavScroll();
+            initGlobalScrollHandler();
             loadMessages();
-            initScrollProgress();
-            initScrollTop();
             initTypingEffect();
             initMobileNav();
-            initParallaxScroll();
 
             if (!isTouch) {
                 initCursorGlow();
@@ -2810,86 +2926,6 @@
             // 点击爆炸效果
             document.addEventListener('click', (e) => {
                 createExplosion(e.clientX, e.clientY);
-            });
-        }
-
-        // 视差滚动效果
-        function initParallaxScroll() {
-            let ticking = false;
-            
-            window.addEventListener('scroll', () => {
-                if (!ticking) {
-                    window.requestAnimationFrame(() => {
-                        const scrolled = window.scrollY;
-                        
-                        // 背景层视差 - 更平滑
-                        const bgGradient = document.querySelector('.bg-gradient');
-                        const glowOrbs = document.querySelector('.glow-orbs');
-                        const stars = document.getElementById('stars');
-                        
-                        if (bgGradient) {
-                            bgGradient.style.transform = `translateY(${scrolled * 0.05}px)`;
-                        }
-                        if (glowOrbs) {
-                            glowOrbs.style.transform = `translateY(${scrolled * 0.03}px)`;
-                        }
-                        if (stars) {
-                            stars.style.transform = `translateY(${scrolled * 0.02}px)`;
-                        }
-
-                        // 英雄区域视差
-                        const hero = document.getElementById('hero');
-                        if (hero) {
-                            const heroTitle = hero.querySelector('.hero-title');
-                            if (heroTitle && scrolled < 500) {
-                                const yOffset = scrolled * 0.15;
-                                heroTitle.style.transform = `translateY(${yOffset}px)`;
-                                heroTitle.style.opacity = Math.max(0.3, 1 - (scrolled / 600));
-                            }
-                        }
-                        
-                        ticking = false;
-                    });
-                    ticking = true;
-                }
-            });
-        }
-
-        // 滚动进度条
-        function initScrollProgress() {
-            const progressBar = document.createElement('div');
-            progressBar.className = 'scroll-progress';
-            progressBar.id = 'scrollProgress';
-            document.body.prepend(progressBar);
-
-            window.addEventListener('scroll', () => {
-                const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                const scrolled = (window.scrollY / windowHeight) * 100;
-                progressBar.style.width = scrolled + '%';
-            });
-        }
-
-        // 回到顶部按钮
-        function initScrollTop() {
-            const scrollTopBtn = document.createElement('div');
-            scrollTopBtn.className = 'scroll-top';
-            scrollTopBtn.id = 'scrollTop';
-            scrollTopBtn.title = '回到顶部';
-            document.body.appendChild(scrollTopBtn);
-
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 400) {
-                    scrollTopBtn.classList.add('visible');
-                } else {
-                    scrollTopBtn.classList.remove('visible');
-                }
-            });
-
-            scrollTopBtn.addEventListener('click', () => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
             });
         }
 
