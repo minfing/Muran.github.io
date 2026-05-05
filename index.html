@@ -1829,6 +1829,67 @@
             .aplayer .aplayer-info .aplayer-music .aplayer-author { font-size: 0.76rem !important; }
         }
 
+        /* ===== 歌词背景覆盖层 ===== */
+        .lyrics-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 25vh;
+        }
+
+        .lyrics-inner {
+            text-align: center;
+            width: 100%;
+            max-width: 700px;
+            padding: 0 40px;
+        }
+
+        .lyrics-line {
+            font-size: 1rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            line-height: 2.4;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            min-height: 2.4em;
+            word-break: break-all;
+        }
+
+        .lyrics-prev, .lyrics-next {
+            color: rgba(255,255,255,0.2);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .lyrics-current {
+            color: rgba(255,255,255,0.85);
+            font-size: 1.35rem;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-shadow: 0 0 30px rgba(245,166,35,0.35), 0 0 60px rgba(233,69,96,0.15);
+        }
+
+        .lyrics-line.lyrics-empty {
+            opacity: 0;
+        }
+
+        @media (max-width: 768px) {
+            .lyrics-overlay { padding-bottom: 22vh; }
+            .lyrics-inner { padding: 0 20px; }
+            .lyrics-prev, .lyrics-next { font-size: 0.75rem; }
+            .lyrics-current { font-size: 1.1rem; letter-spacing: 2px; }
+        }
+
+        @media (max-width: 480px) {
+            .lyrics-overlay { padding-bottom: 20vh; }
+            .lyrics-inner { padding: 0 16px; }
+            .lyrics-prev, .lyrics-next { font-size: 0.7rem; letter-spacing: 0; }
+            .lyrics-current { font-size: 0.95rem; letter-spacing: 1px; }
+        }
+
         /* ========== 响应式 ========== */
 
         /* 平板横屏 768-1024px */
@@ -2075,6 +2136,13 @@
     <div class="bg-layer glow-orbs"></div>
     <div class="bg-layer" id="stars"></div>
     <div class="bg-layer" id="meteors"></div>
+    <div class="lyrics-overlay" id="lyricsOverlay">
+        <div class="lyrics-inner" id="lyricsInner">
+            <div class="lyrics-line lyrics-prev" id="lyricsPrev"></div>
+            <div class="lyrics-line lyrics-current" id="lyricsCurrent"></div>
+            <div class="lyrics-line lyrics-next" id="lyricsNext"></div>
+        </div>
+    </div>
 
     <nav>
         <div class="nav-logo">铁道工电系</div>
@@ -2341,42 +2409,204 @@
 
     <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
     <script>
-        function initMusicPlayer() {
-            var container = document.getElementById('musicPlayer');
-            var apiUrl = 'https://api.i-meto.com/meting/api?server=tencent&type=playlist&id=9708433309';
+        var PLAYLIST_ID = '7599047620';
+        var ap = null;
+        var lyricsData = {};
+        var lrcTimer = null;
+        var currentLrcIndex = -1;
 
-            fetch(apiUrl)
-                .then(function(res) { return res.json(); })
-                .then(function(data) {
-                    if (!data || !data.length) {
-                        throw new Error('empty');
+        function parseLrc(lrcText) {
+            if (!lrcText) return [];
+            var lines = lrcText.split('\n');
+            var result = [];
+            var regex = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/g;
+            for (var i = 0; i < lines.length; i++) {
+                var line = lines[i].trim();
+                if (!line) continue;
+                var match;
+                var timeTags = [];
+                while ((match = regex.exec(line)) !== null) {
+                    var min = parseInt(match[1], 10);
+                    var sec = parseInt(match[2], 10);
+                    var ms = parseInt(match[3], 10);
+                    if (match[3].length === 2) ms *= 10;
+                    timeTags.push(min * 60 + sec + ms / 1000);
+                }
+                regex.lastIndex = 0;
+                var text = line.replace(/\[(\d{2}):(\d{2})\.(\d{2,3})\]/g, '').trim();
+                for (var j = 0; j < timeTags.length; j++) {
+                    result.push({ time: timeTags[j], text: text });
+                }
+            }
+            result.sort(function(a, b) { return a.time - b.time; });
+            return result;
+        }
+
+        function findLrcLine(lrcArray, currentTime) {
+            if (!lrcArray || lrcArray.length === 0) return -1;
+            var idx = -1;
+            for (var i = 0; i < lrcArray.length; i++) {
+                if (lrcArray[i].time <= currentTime) idx = i;
+                else break;
+            }
+            return idx;
+        }
+
+        function updateLyricsDisplay(prevText, curText, nextText) {
+            var prevEl = document.getElementById('lyricsPrev');
+            var curEl = document.getElementById('lyricsCurrent');
+            var nextEl = document.getElementById('lyricsNext');
+
+            if (prevText) {
+                prevEl.textContent = prevText;
+                prevEl.classList.remove('lyrics-empty');
+            } else {
+                prevEl.classList.add('lyrics-empty');
+            }
+
+            curEl.textContent = curText || '';
+
+            if (nextText) {
+                nextEl.textContent = nextText;
+                nextEl.classList.remove('lyrics-empty');
+            } else {
+                nextEl.classList.add('lyrics-empty');
+            }
+        }
+
+        function getAudio() {
+            if (!ap || !ap.container) return null;
+            return ap.container.querySelector('audio');
+        }
+
+        var lrcBound = false;
+
+        function startLrcSync() {
+            stopLrcSync();
+            var audio = getAudio();
+            if (!audio) {
+                setTimeout(startLrcSync, 800);
+                return;
+            }
+
+            function tick() {
+                var a = getAudio();
+                if (!a || a.paused) return;
+                var currentTime = a.currentTime;
+                var songIndex = ap.list.index;
+                var song = ap.list.audios[songIndex];
+                var songKey = song ? song.name + '|' + song.artist : '';
+                var lrcArr = lyricsData[songKey];
+
+                if (lrcArr && lrcArr.length > 0) {
+                    var idx = findLrcLine(lrcArr, currentTime);
+                    if (idx !== currentLrcIndex) {
+                        currentLrcIndex = idx;
+                        updateLyricsDisplay(
+                            idx > 0 ? lrcArr[idx - 1].text : '',
+                            idx >= 0 ? lrcArr[idx].text : '',
+                            idx >= 0 && idx < lrcArr.length - 1 ? lrcArr[idx + 1].text : ''
+                        );
                     }
-                    document.getElementById('musicLoading').style.display = 'none';
-                    new APlayer({
-                        container: container,
-                        fixed: false,
-                        autoplay: false,
-                        theme: '#e94560',
-                        loop: 'all',
-                        order: 'random',
-                        preload: 'auto',
-                        volume: 0.7,
-                        listFolded: true,
-                        listMaxHeight: 360,
-                        lrcType: 1,
-                        audio: data
-                    });
+                }
+            }
+
+            if (!lrcBound) {
+                lrcBound = true;
+                audio.addEventListener('play', function() {
+                    currentLrcIndex = -1;
+                    lrcTimer = setInterval(tick, 250);
+                });
+                audio.addEventListener('pause', function() { stopLrcSync(); });
+                audio.addEventListener('ended', function() { stopLrcSync(); });
+                audio.addEventListener('seeked', function() {
+                    currentLrcIndex = -1;
+                    tick();
+                });
+            }
+
+            if (!audio.paused) {
+                lrcTimer = setInterval(tick, 250);
+            }
+        }
+
+        function stopLrcSync() {
+            if (lrcTimer) { clearInterval(lrcTimer); lrcTimer = null; }
+        }
+
+        function onSongSwitch() {
+            currentLrcIndex = -1;
+            stopLrcSync();
+            setTimeout(startLrcSync, 500);
+        }
+
+        var FALLBACK_LRC = {
+            '晴天|周杰伦': '[00:00.00]晴天 - 周杰伦\n[00:25.00]故事的小黄花 从出生那年就飘着\n[00:31.00]童年的荡秋千 随记忆一直晃到现在\n[00:37.00]Re So So Si Do Si La So La\n[00:41.00]Si Si Si Si La Si La So\n[00:44.00]吹着前奏 望着天空\n[00:49.00]我想起花瓣试着掉落\n[00:56.00]为你翘课的那一天 花落的那一天\n[01:00.00]教室的那一间 我怎么看不见\n[01:05.00]消失的下雨天 我好想再淋一遍\n[01:13.00]没想到失去的勇气我还留着\n[01:49.00]好想再问一遍 你会等待还是离开\n[01:57.00]刮风这天 我试过握着你手\n[02:01.00]但偏偏 雨渐渐 大到我看你不见\n[02:07.00]还要多久 我才能在你身边\n[02:14.00]等到放晴的那天 也许我会比较好一点\n[02:21.00]从前从前 有个人爱你很久\n[02:27.00]但偏偏 风渐渐 把距离吹得好远\n[02:34.00]好不容易 又能再多爱一天\n[02:41.00]但故事的最后 你好像还是说了拜拜',
+            '起风了|买辣椒也用券': '[00:00.00]起风了 - 买辣椒也用券\n[00:18.00]这一路上走走停停 顺着少年漂流的痕迹\n[00:25.00]迈出车站的前一刻 竟有些犹豫\n[00:31.00]不禁笑这近乡情怯 仍无可避免\n[00:37.00]而长野的天 依旧那么暖 风吹起了从前\n[00:43.00]从前初识这世间 万般流连\n[00:48.00]看着天边似在眼前\n[00:52.00]也甘愿赴汤蹈火去走它一遍\n[00:57.00]如今走过这世间 万般流连\n[01:02.00]翻过岁月不同侧脸\n[01:05.00]措不及防闯入你的笑颜\n[01:12.00]我曾难自拔于世界之大 也沉溺于其中梦话\n[01:19.00]不得真假 不做挣扎 不惧笑话\n[01:25.00]我曾将青春翻涌成她 也曾指尖弹出盛夏\n[01:32.00]心之所动 且就随缘去吧\n[01:39.00]逆着光行走 任风吹雨打',
+            '孤勇者|陈奕迅': '[00:00.00]孤勇者 - 陈奕迅\n[00:20.00]都 是勇敢的\n[00:25.00]你额头的伤口 你的不同 你犯的错\n[00:32.00]都 不必隐藏\n[00:38.00]你破旧的玩偶 你的面具 你的自我\n[00:45.00]他们说要带着光 驯服每一头怪兽\n[00:51.00]他们说要缝好你的伤 没有人爱小丑\n[00:57.00]为何孤独不可光荣\n[01:00.00]人只有不完美值得歌颂\n[01:04.00]谁说污泥满身的不算英雄\n[01:11.00]爱你孤身走暗巷 爱你不跪的模样\n[01:17.00]爱你对峙过绝望 不肯哭一场\n[01:23.00]爱你破烂的衣裳 却敢堵命运的枪\n[01:30.00]爱你和我那么像 缺口都一样\n[01:36.00]去吗 配吗 这褴褛的披风\n[01:42.00]战吗 战啊 以最卑微的梦\n[01:49.00]致那黑夜中的呜咽与怒吼\n[01:55.00]谁说站在光里的才算英雄',
+            '错位时空|艾辰': '[00:00.00]错位时空 - 艾辰\n[00:16.00]填不满半排观众的电影\n[00:19.00]直到散场时突然亮起灯\n[00:23.00]字幕定格在某某出品和发行\n[00:27.00]我目送他们行色匆匆\n[00:31.00]像个自不量力的复读生\n[00:34.00]完不成金榜题名的使命\n[00:38.00]命不是猜剪刀石头布的决定\n[00:43.00]那么任性\n[00:47.00]我吹过你吹过的晚风\n[00:50.00]那我们算不算相拥\n[00:54.00]可如梦初醒般的两手空空\n[00:58.00]心也空\n[01:02.00]我吹过你吹过的晚风\n[01:05.00]是否看过同样风景\n[01:09.00]像扰乱时差留在错位时空\n[01:13.00]终是空 是空',
+            '兰亭序|周杰伦': '[00:00.00]兰亭序 - 周杰伦\n[00:26.00]兰亭临帖 行书如行云流水\n[00:32.00]月下门推 心细如你脚步碎\n[00:38.00]忙不迭 千年碑易拓 却难拓你的美\n[00:47.00]真迹绝 真心能给谁\n[00:53.00]牧笛横吹 黄酒小菜又几碟\n[00:59.00]夕阳余晖 如你的羞怯似醉\n[01:05.00]摹本易写 而墨香不退与你同留余味\n[01:14.00]一行朱砂 到底圈了谁\n[01:20.00]无关风月 我题序等你回\n[01:27.00]悬笔一绝 那岸边浪千叠\n[01:33.00]情字何解 怎落笔都不对\n[01:40.00]而我独缺 你一生的了解'
+        };
+
+        var FALLBACK_AUDIO = [
+            { name: '晴天', artist: '周杰伦', url: 'https://music.163.com/song/media/outer/url?id=5257139.mp3', cover: 'https://p1.music.126.net/p9lhvB4gAv6GGKjQikX6Ng==/109951168270299114.jpg' },
+            { name: '起风了', artist: '买辣椒也用券', url: 'https://music.163.com/song/media/outer/url?id=1330348068.mp3', cover: 'https://p1.music.126.net/diGA1qH_g6Cq3uE6L0dYnQ==/109951169925926831.jpg' },
+            { name: '孤勇者', artist: '陈奕迅', url: 'https://music.163.com/song/media/outer/url?id=1901371647.mp3', cover: 'https://p1.music.126.net/KJ_BcM_Qk5o0JqPvAZOAyQ==/109951167277397521.jpg' },
+            { name: '错位时空', artist: '艾辰', url: 'https://music.163.com/song/media/outer/url?id=523696078.mp3', cover: 'https://p1.music.126.net/pF3sFJv0NoJkCgD0WgvCZQ==/109951168777588595.jpg' },
+            { name: '兰亭序', artist: '周杰伦', url: 'https://music.163.com/song/media/outer/url?id=1481164987.mp3', cover: 'https://p1.music.126.net/NW6_H-q4mYIYlYO-Ca--CA==/109951168547555873.jpg' }
+        ];
+
+        function indexLrcData(audioList, sourceLrc) {
+            for (var i = 0; i < audioList.length; i++) {
+                var song = audioList[i];
+                var key = song.name + '|' + song.artist;
+                var lrcText = song.lrc || (sourceLrc ? sourceLrc[key] : '');
+                lyricsData[key] = parseLrc(lrcText);
+            }
+        }
+
+        function createPlayer(audio) {
+            document.getElementById('musicLoading').style.display = 'none';
+            ap = new APlayer({
+                container: document.getElementById('musicPlayer'),
+                fixed: false, autoplay: false, theme: '#e94560',
+                loop: 'all', order: 'list', preload: 'auto',
+                volume: 0.7, listFolded: false, listMaxHeight: 400, lrcType: 1,
+                audio: audio
+            });
+
+            ap.on('listswitch', onSongSwitch);
+            setTimeout(startLrcSync, 500);
+        }
+
+        function tryFetch(apiUrl, nextUrl) {
+            fetch(apiUrl)
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data && data.length) {
+                        indexLrcData(data, null);
+                        createPlayer(data);
+                    } else if (nextUrl) {
+                        tryFetch(nextUrl, null);
+                    } else {
+                        indexLrcData(FALLBACK_AUDIO, FALLBACK_LRC);
+                        createPlayer(FALLBACK_AUDIO);
+                    }
                 })
                 .catch(function() {
-                    document.getElementById('musicLoading').innerHTML =
-                        '<div class="empty-icon">⚠️</div>' +
-                        '<p>歌单加载失败</p>' +
-                        '<p class="empty-hint">请检查歌单是否为公开状态，或稍后重试</p>';
+                    if (nextUrl) {
+                        tryFetch(nextUrl, null);
+                    } else {
+                        indexLrcData(FALLBACK_AUDIO, FALLBACK_LRC);
+                        createPlayer(FALLBACK_AUDIO);
+                    }
                 });
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            initMusicPlayer();
+            var api1 = 'https://api.i-meto.com/meting/api?server=netease&type=playlist&id=' + PLAYLIST_ID;
+            var api2 = 'https://api.injahow.cn/meting/?server=netease&type=playlist&id=' + PLAYLIST_ID;
+            tryFetch(api1, api2);
         });
     </script>
     <script>
