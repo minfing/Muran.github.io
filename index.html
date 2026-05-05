@@ -18,6 +18,48 @@
             line-height: 1.6;
         }
 
+        /* 页面加载动画 */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #020205;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .page-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-circle {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top-color: #e94560;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        .loader-text {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.6);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         ::selection {
             background: rgba(233, 69, 96, 0.3);
             color: #fff;
@@ -1717,6 +1759,8 @@
         /* ===== APlayer 深色主题适配 ===== */
         .music-section {
             padding: 60px 0 100px;
+            position: relative;
+            z-index: 1;
         }
 
         .music-container {
@@ -1725,10 +1769,19 @@
         }
 
         .aplayer {
-            background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.02) 100%) !important;
-            border: 1px solid rgba(255,255,255,0.08) !important;
+            background: linear-gradient(145deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%) !important;
+            border: 1px solid rgba(255,255,255,0.12) !important;
             border-radius: 20px !important;
             font-family: inherit !important;
+            backdrop-filter: blur(15px) !important;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3), 0 0 60px rgba(233,69,96,0.1) !important;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        .aplayer:hover {
+            transform: translateY(-3px) !important;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.4), 0 0 80px rgba(233,69,96,0.15) !important;
+            border-color: rgba(233,69,96,0.3) !important;
         }
 
         .aplayer .aplayer-info .aplayer-music .aplayer-title {
@@ -2131,6 +2184,12 @@
     </style>
 </head>
 <body>
+    <!-- 页面加载器 -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-circle"></div>
+        <div class="loader-text">Loading</div>
+    </div>
+
     <!-- 背景层 -->
     <div class="bg-layer bg-gradient"></div>
     <div class="bg-layer glow-orbs"></div>
@@ -2580,25 +2639,55 @@
         }
 
         function tryFetch(apiUrl, nextUrl) {
+            const loadingEl = document.getElementById('musicLoading');
+            let attemptCount = 1;
+            if (nextUrl) attemptCount = 2;
+            
+            let currentAttempt = 1;
+            
+            function updateLoadingStatus(message) {
+                if (loadingEl) {
+                    loadingEl.innerHTML = `
+                        <div class="empty-icon">🎵</div>
+                        <p>${message}</p>
+                    `;
+                }
+            }
+            
+            updateLoadingStatus(`正在加载歌单... (${currentAttempt}/${attemptCount})`);
+            
             fetch(apiUrl)
                 .then(function(r) { return r.json(); })
                 .then(function(data) {
                     if (data && data.length) {
-                        indexLrcData(data, null);
-                        createPlayer(data);
+                        updateLoadingStatus('加载成功！');
+                        setTimeout(() => {
+                            indexLrcData(data, null);
+                            createPlayer(data);
+                        }, 500);
                     } else if (nextUrl) {
+                        currentAttempt++;
+                        updateLoadingStatus(`切换备用源... (${currentAttempt}/${attemptCount})`);
                         tryFetch(nextUrl, null);
                     } else {
-                        indexLrcData(FALLBACK_AUDIO, FALLBACK_LRC);
-                        createPlayer(FALLBACK_AUDIO);
+                        updateLoadingStatus('使用本地歌单');
+                        setTimeout(() => {
+                            indexLrcData(FALLBACK_AUDIO, FALLBACK_LRC);
+                            createPlayer(FALLBACK_AUDIO);
+                        }, 500);
                     }
                 })
                 .catch(function() {
                     if (nextUrl) {
+                        currentAttempt++;
+                        updateLoadingStatus(`切换备用源... (${currentAttempt}/${attemptCount})`);
                         tryFetch(nextUrl, null);
                     } else {
-                        indexLrcData(FALLBACK_AUDIO, FALLBACK_LRC);
-                        createPlayer(FALLBACK_AUDIO);
+                        updateLoadingStatus('使用本地歌单');
+                        setTimeout(() => {
+                            indexLrcData(FALLBACK_AUDIO, FALLBACK_LRC);
+                            createPlayer(FALLBACK_AUDIO);
+                        }, 500);
                     }
                 });
         }
@@ -2610,10 +2699,11 @@
         });
     </script>
     <script>
-        // 创建星星背景
+        // 创建星星背景 - 性能优化版
         function createStars() {
             const container = document.getElementById('stars');
-            const starCount = 50;
+            const isMobile = window.innerWidth <= 768;
+            const starCount = isMobile ? 30 : 50; // 移动端减少星星数量
             
             for (let i = 0; i < starCount; i++) {
                 const star = document.createElement('div');
@@ -2639,32 +2729,40 @@
                 star.style.height = size + 'px';
                 star.style.animationDelay = Math.random() * 6 + 's';
                 star.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                star.style.willChange = 'opacity, transform';
                 container.appendChild(star);
             }
         }
 
-        // 创建流星
+        // 创建流星 - 性能优化版
         function createMeteors() {
             const container = document.getElementById('meteors');
+            const isMobile = window.innerWidth <= 768;
+            const meteorInterval = isMobile ? 20000 : 15000; // 移动端减少流星频率
+            
+            let meteorTimer = null;
             
             function spawnMeteor() {
+                if (document.hidden) return; // 页面隐藏时不创建流星
                 const meteor = document.createElement('div');
                 meteor.className = 'meteor';
                 meteor.style.left = (Math.random() * 40 + 60) + '%';
                 meteor.style.top = Math.random() * 30 + '%';
                 meteor.style.animationDuration = (Math.random() * 0.5 + 0.8) + 's';
+                meteor.style.willChange = 'transform, opacity';
                 container.appendChild(meteor);
                 setTimeout(() => meteor.remove(), 1600);
             }
 
-            let meteorTimer = setInterval(spawnMeteor, 15000);
+            meteorTimer = setInterval(spawnMeteor, meteorInterval);
 
             document.addEventListener('visibilitychange', () => {
                 if (document.hidden) {
                     clearInterval(meteorTimer);
                     meteorTimer = null;
                 } else if (!meteorTimer) {
-                    meteorTimer = setInterval(spawnMeteor, 15000);
+                    meteorTimer = setInterval(spawnMeteor, meteorInterval);
+                    spawnMeteor(); // 页面可见时立即创建一颗
                 }
             });
         }
@@ -2773,6 +2871,7 @@
             const starsEl = document.getElementById('stars');
             const hero = document.getElementById('hero');
             const heroTitle = hero ? hero.querySelector('.hero-title') : null;
+            const isMobile = window.innerWidth <= 768;
 
             const progressBar = document.createElement('div');
             progressBar.className = 'scroll-progress';
@@ -2790,35 +2889,61 @@
             });
 
             let ticking = false;
+            let lastScrollY = 0;
+            let lastTime = Date.now();
+            let currentSectionId = '';
 
             window.addEventListener('scroll', () => {
                 if (!ticking) {
                     window.requestAnimationFrame(() => {
+                        const now = Date.now();
                         const scrolled = window.scrollY;
+                        const deltaTime = now - lastTime;
+                        
+                        // 节流优化 - 避免过于频繁的计算
+                        if (deltaTime < 8) { // 约 120fps
+                            ticking = false;
+                            return;
+                        }
+                        
+                        lastTime = now;
+                        lastScrollY = scrolled;
                         const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
 
+                        // 导航栏滚动状态
                         nav.classList.toggle('scrolled', scrolled > 50);
 
-                        let current = '';
-                        sections.forEach(section => {
-                            if (scrolled >= section.offsetTop - 200) {
-                                current = section.getAttribute('id');
+                        // 导航链接激活状态（使用更高效的方式）
+                        let newSectionId = '';
+                        for (let i = sections.length - 1; i >= 0; i--) {
+                            if (scrolled >= sections[i].offsetTop - 200) {
+                                newSectionId = sections[i].getAttribute('id');
+                                break;
                             }
-                        });
-                        navLinks.forEach(link => {
-                            link.classList.toggle('active', link.getAttribute('href') === '#' + current);
-                        });
-
-                        if (bgGradient) bgGradient.style.transform = `translateY(${scrolled * 0.05}px)`;
-                        if (glowOrbs) glowOrbs.style.transform = `translateY(${scrolled * 0.03}px)`;
-                        if (starsEl) starsEl.style.transform = `translateY(${scrolled * 0.02}px)`;
-
-                        if (heroTitle && scrolled < 500) {
-                            heroTitle.style.transform = `translateY(${scrolled * 0.15}px)`;
-                            heroTitle.style.opacity = Math.max(0.3, 1 - (scrolled / 600));
+                        }
+                        if (newSectionId !== currentSectionId) {
+                            currentSectionId = newSectionId;
+                            navLinks.forEach(link => {
+                                link.classList.toggle('active', link.getAttribute('href') === '#' + currentSectionId);
+                            });
                         }
 
+                        // 视差效果 - 移动端禁用以提高性能
+                        if (!isMobile) {
+                            if (bgGradient) bgGradient.style.transform = `translateY(${scrolled * 0.05}px)`;
+                            if (glowOrbs) glowOrbs.style.transform = `translateY(${scrolled * 0.03}px)`;
+                            if (starsEl) starsEl.style.transform = `translateY(${scrolled * 0.02}px)`;
+
+                            if (heroTitle && scrolled < 500) {
+                                heroTitle.style.transform = `translateY(${scrolled * 0.15}px)`;
+                                heroTitle.style.opacity = Math.max(0.3, 1 - (scrolled / 600));
+                            }
+                        }
+
+                        // 进度条
                         progressBar.style.width = windowHeight > 0 ? (scrolled / windowHeight) * 100 + '%' : '0%';
+                        
+                        // 回到顶部按钮
                         scrollTopBtn.classList.toggle('visible', scrolled > 400);
 
                         ticking = false;
@@ -2826,6 +2951,12 @@
                     ticking = true;
                 }
             });
+            
+            // 添加 CSS will-change 优化
+            if (bgGradient) bgGradient.style.willChange = 'transform';
+            if (glowOrbs) glowOrbs.style.willChange = 'transform';
+            if (starsEl) starsEl.style.willChange = 'transform';
+            if (heroTitle) heroTitle.style.willChange = 'transform, opacity';
         }
 
         let messages = JSON.parse(localStorage.getItem('guestMessages') || '[]');
@@ -2940,14 +3071,28 @@
         function submitMessage() {
             const nameInput = document.getElementById('guestName');
             const messageInput = document.getElementById('guestMessage');
+            const submitBtn = document.querySelector('.submit-btn');
             
             const name = nameInput.value.trim();
             const content = messageInput.value.trim();
             
             if (!name || !content) {
+                // 增加错误动画反馈
+                nameInput.style.borderColor = '#e94560';
+                messageInput.style.borderColor = '#e94560';
+                setTimeout(() => {
+                    nameInput.style.borderColor = '';
+                    messageInput.style.borderColor = '';
+                }, 1000);
+                
                 alert('请填写名字和留言内容！');
                 return;
             }
+            
+            // 添加按钮加载状态
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.7';
+            submitBtn.innerHTML = '<span>发送中...</span><div class="btn-glow"></div>';
             
             const now = new Date();
             const time = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
@@ -2959,11 +3104,38 @@
             messageInput.value = '';
             
             loadMessages();
+            
+            // 恢复按钮状态
+            setTimeout(() => {
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+                submitBtn.innerHTML = '<span>发送留言</span><div class="btn-glow"></div>';
+                
+                // 自动滚动到第一条新留言
+                const firstMsg = document.querySelector('.message-item');
+                if (firstMsg) {
+                    firstMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }, 500);
         }
 
         // 初始化
         document.addEventListener('DOMContentLoaded', () => {
             const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            const isMobile = window.innerWidth <= 768;
+
+            // 添加设备类到 body，便于 CSS 针对性优化
+            document.body.classList.add(isTouch ? 'touch-device' : 'no-touch-device');
+            document.body.classList.add(isMobile ? 'mobile-device' : 'desktop-device');
+
+            // 隐藏加载器
+            const loader = document.getElementById('pageLoader');
+            if (loader) {
+                setTimeout(() => {
+                    loader.classList.add('hidden');
+                    setTimeout(() => loader.remove(), 500);
+                }, 800);
+            }
 
             createStars();
             createMeteors();
