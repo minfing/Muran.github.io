@@ -36,6 +36,8 @@
         
         @media screen and (max-width: 1200px) {
             html { font-size: 15px; }
+            nav { padding: 18px 40px; }
+            nav.scrolled { padding: 11px 40px; }
         }
         
         @media screen and (max-width: 1024px) {
@@ -2149,6 +2151,8 @@
 
             .about-content { gap: 50px; }
 
+            .timeline-card { max-width: 350px; }
+
             .achievements-grid { max-width: 650px; }
             .achievement-card { padding: 40px 30px; }
 
@@ -2291,9 +2295,16 @@
             .password-dialog { padding: 28px 22px 20px; }
             .password-dialog h3 { font-size: 1rem; }
 
+            .scroll-progress { height: 2px; }
+
             .about-card:hover, .achievement-card:hover, .school-card:hover, .timeline-card:hover {
                 transform: none;
             }
+        }
+
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2.6rem; letter-spacing: -1px; }
+            .hero-title .line2 { font-size: 1.5rem; letter-spacing: 4px; }
         }
 
         /* 手机 320-480px */
@@ -2364,6 +2375,29 @@
             .action-btn { width: 34px; height: 34px; }
             .edit-save, .edit-cancel { font-size: 0.78rem; padding: 5px 12px; }
             .clear-all-btn { font-size: 0.82rem; padding: 10px 16px; }
+        }
+
+        @media (max-width: 360px) {
+            .password-dialog .pw-btns { flex-direction: column; }
+        }
+
+        @media (max-width: 896px) and (orientation: landscape) {
+            section { min-height: auto; padding: 60px 0; }
+            #hero { min-height: auto; padding: 100px 0 60px; }
+            .hero-bg-glow { width: 250px; height: 250px; }
+        }
+
+        @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+            .about-content { gap: 40px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
         }
     </style>
 </head>
@@ -2459,7 +2493,7 @@
                         <p>铁道工电系</p>
                         <div class="qrcode-container">
                             <div class="qrcode-box">
-                                <img src="https://s41.ax1x.com/2026/05/05/peHX9XR.jpg" alt="公众号二维码" class="qrcode-img">
+                                <img src="https://s41.ax1x.com/2026/05/05/peHX9XR.jpg" alt="公众号二维码" class="qrcode-img" loading="lazy" width="100" height="100">
                             </div>
                             <span class="qrcode-text">扫码关注公众号</span>
                         </div>
