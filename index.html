@@ -1705,6 +1705,32 @@
             50% { transform: scale(1.2); opacity: 1; }
         }
 
+        .disclaimer {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        .disclaimer:hover {
+            opacity: 0.8;
+        }
+
+        .disclaimer p:first-child {
+            font-size: 0.88rem;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .disclaimer-text {
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.35);
+            line-height: 1.8;
+            margin: 6px 0;
+        }
+
         /* 波纹动画效果 */
         .ripple {
             position: absolute;
@@ -2464,6 +2490,13 @@
         <p class="footer-text">从2025到未来，星河璀璨</p>
         <p class="footer-admin-hint">双击此处进入管理员模式</p>
         <div class="footer-hearts">💫</div>
+        
+        <div class="disclaimer">
+            <p>© 2025-2026 铁道工电系 · 星河未满</p>
+            <p class="disclaimer-text">本网站内容仅供学习交流使用，部分素材来源于网络，如有侵权请联系删除。</p>
+            <p class="disclaimer-text">网站设计与代码版权归作者所有，未经授权禁止商用转载。</p>
+            <p class="disclaimer-text">本站音乐播放器内容来源于网易云音乐，版权归原作者所有。</p>
+        </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
