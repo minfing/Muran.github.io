@@ -2,13 +2,16 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=0.5, user-scalable=yes">
     <title>铁道工电系 & 星河未满</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        html { scroll-behavior: smooth; }
+        html { 
+            scroll-behavior: smooth; 
+            font-size: 16px;
+        }
         
         body {
             font-family: 'Microsoft YaHei', 'PingFang SC', -apple-system, sans-serif;
@@ -16,6 +19,29 @@
             color: #fff;
             overflow-x: hidden;
             line-height: 1.6;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+        
+        @media screen and (max-width: 1200px) {
+            html { font-size: 15px; }
+        }
+        
+        @media screen and (max-width: 1024px) {
+            html { font-size: 14px; }
+        }
+        
+        @media screen and (max-width: 768px) {
+            html { font-size: 13px; }
+        }
+        
+        @media screen and (max-width: 480px) {
+            html { font-size: 12px; }
+        }
+        
+        @media screen and (max-width: 320px) {
+            html { font-size: 11px; }
         }
 
         /* 页面加载动画 */
