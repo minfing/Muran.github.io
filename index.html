@@ -628,6 +628,7 @@
             opacity: 0;
             transform: translateX(50px);
             transition: all 0.9s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+            perspective: 1000px;
         }
 
         .about-cards.visible {
@@ -639,16 +640,15 @@
             background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
             border: 1px solid rgba(255,255,255,0.08);
             border-radius: 22px;
-            padding: 35px 28px;
+            padding: 0;
             text-align: center;
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             position: relative;
             overflow: hidden;
             min-height: 200px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            backface-visibility: hidden;
+            transform-style: preserve-3d;
         }
 
         .about-card::before {
@@ -943,19 +943,22 @@
             gap: 30px;
             max-width: 750px;
             margin: 0 auto;
+            perspective: 1000px;
         }
 
         .achievement-card {
             background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
             border: 1px solid rgba(255,255,255,0.06);
             border-radius: 28px;
-            padding: 50px 40px;
+            padding: 0;
             text-align: center;
             position: relative;
             overflow: hidden;
             opacity: 0;
             transform: translateY(40px);
             transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            backface-visibility: hidden;
+            transform-style: preserve-3d;
         }
 
         .achievement-card.visible {
@@ -1045,18 +1048,36 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 28px;
+            perspective: 1000px;
         }
 
         .school-card {
             background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
             border: 1px solid rgba(255,255,255,0.06);
             border-radius: 22px;
-            padding: 35px;
+            padding: 0;
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             opacity: 0;
             transform: translateY(30px);
             position: relative;
             overflow: hidden;
+            backface-visibility: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .card-inner {
+            padding: 35px 28px;
+            position: relative;
+            z-index: 1;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 200px;
+        }
+
+        .achievement-card .card-inner {
+            padding: 50px 40px;
         }
 
         .school-card.visible {
@@ -1090,6 +1111,9 @@
             font-size: 2.8rem;
             margin-bottom: 18px;
             transition: all 0.4s ease;
+            display: inline-block;
+            backface-visibility: hidden;
+            transform-style: preserve-3d;
         }
 
         .school-card:hover .school-icon {
@@ -2373,14 +2397,18 @@
                         <p>星河未满</p>
                     </a>
                     <div class="about-card">
-                        <div class="about-card-icon">🚀</div>
-                        <h3>新征程</h3>
-                        <p>持续成长中</p>
+                        <div class="card-inner">
+                            <div class="about-card-icon">🚀</div>
+                            <h3>新征程</h3>
+                            <p>持续成长中</p>
+                        </div>
                     </div>
                     <div class="about-card">
-                        <div class="about-card-icon">⭐</div>
-                        <h3>星河梦</h3>
-                        <p>未满待续</p>
+                        <div class="card-inner">
+                            <div class="about-card-icon">⭐</div>
+                            <h3>星河梦</h3>
+                            <p>未满待续</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2436,16 +2464,20 @@
             </div>
             <div class="achievements-grid">
                 <div class="achievement-card">
-                    <div class="achievement-icon">🏆</div>
-                    <h3 class="achievement-title">从0到1</h3>
-                    <p class="achievement-desc">从无到有，成功创建并运营铁道工电系公众号</p>
-                    <div class="achievement-year">2025</div>
+                    <div class="card-inner">
+                        <div class="achievement-icon">🏆</div>
+                        <h3 class="achievement-title">从0到1</h3>
+                        <p class="achievement-desc">从无到有，成功创建并运营铁道工电系公众号</p>
+                        <div class="achievement-year">2025</div>
+                    </div>
                 </div>
                 <div class="achievement-card">
-                    <div class="achievement-icon">🎬</div>
-                    <h3 class="achievement-title">抖音启航</h3>
-                    <p class="achievement-desc">星河未满抖音号正式创立，进军短视频领域</p>
-                    <div class="achievement-year">2026</div>
+                    <div class="card-inner">
+                        <div class="achievement-icon">🎬</div>
+                        <h3 class="achievement-title">抖音启航</h3>
+                        <p class="achievement-desc">星河未满抖音号正式创立，进军短视频领域</p>
+                        <div class="achievement-year">2026</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2460,39 +2492,53 @@
             </div>
             <div class="school-content">
                 <div class="school-card">
-                    <div class="school-icon">🏫</div>
-                    <h3>系部概况</h3>
-                    <p>铁道工电系是太原铁路机械学校核心铁路特色系部，聚焦铁路工程、电气化供电、信号通信三大关键领域。隶属山西省教育厅直属公办国家级重点中职、国家示范校，地址位于太原市小店区坞城东街20号。</p>
+                    <div class="card-inner">
+                        <div class="school-icon">🏫</div>
+                        <h3>系部概况</h3>
+                        <p>铁道工电系是太原铁路机械学校核心铁路特色系部，聚焦铁路工程、电气化供电、信号通信三大关键领域。隶属山西省教育厅直属公办国家级重点中职、国家示范校，地址位于太原市小店区坞城东街20号。</p>
+                    </div>
                 </div>
                 <div class="school-card">
-                    <div class="school-icon">📚</div>
-                    <h3>专业设置</h3>
-                    <p>开设三大核心专业：电气化铁道供电（700105）、铁道信号施工与维护（700108）、铁道工程施工与维护（700101），均提供三年制中职与五年制"3+2"高职衔接模式。</p>
+                    <div class="card-inner">
+                        <div class="school-icon">📚</div>
+                        <h3>专业设置</h3>
+                        <p>开设三大核心专业：电气化铁道供电（700105）、铁道信号施工与维护（700108）、铁道工程施工与维护（700101），均提供三年制中职与五年制"3+2"高职衔接模式。</p>
+                    </div>
                 </div>
                 <div class="school-card">
-                    <div class="school-icon">🎓</div>
-                    <h3>师资力量</h3>
-                    <p>专任教师40余人，高级职称占比45%，"双师型"教师占比90%以上。专业带头人均为省级骨干教师/教学名师，兼职教师来自太原局集团、中铁电气化局等企业一线技术专家。</p>
+                    <div class="card-inner">
+                        <div class="school-icon">🎓</div>
+                        <h3>师资力量</h3>
+                        <p>专任教师40余人，高级职称占比45%，"双师型"教师占比90%以上。专业带头人均为省级骨干教师/教学名师，兼职教师来自太原局集团、中铁电气化局等企业一线技术专家。</p>
+                    </div>
                 </div>
                 <div class="school-card">
-                    <div class="school-icon">⚙️</div>
-                    <h3>实训基地</h3>
-                    <p>校内建有电气化供电实训中心、铁道信号实训中心（国赛训练基地）、铁道工程实训中心。校外合作单位包括太原局集团、中铁电气化局、中铁六局等。</p>
+                    <div class="card-inner">
+                        <div class="school-icon">⚙️</div>
+                        <h3>实训基地</h3>
+                        <p>校内建有电气化供电实训中心、铁道信号实训中心（国赛训练基地）、铁道工程实训中心。校外合作单位包括太原局集团、中铁电气化局、中铁六局等。</p>
+                    </div>
                 </div>
                 <div class="school-card">
-                    <div class="school-icon">🏆</div>
-                    <h3>系部荣誉</h3>
-                    <p>电气化铁道供电为省级示范专业，铁道信号为国赛获奖专业。近三年获省级以上奖项30+项，毕业生铁路系统就业率85%以上，国企就业率70%+。</p>
+                    <div class="card-inner">
+                        <div class="school-icon">🏆</div>
+                        <h3>系部荣誉</h3>
+                        <p>电气化铁道供电为省级示范专业，铁道信号为国赛获奖专业。近三年获省级以上奖项30+项，毕业生铁路系统就业率85%以上，国企就业率70%+。</p>
+                    </div>
                 </div>
                 <div class="school-card">
-                    <div class="school-icon">💪</div>
-                    <h3>系部文化</h3>
-                    <p>系训：精工强能、笃行致远。育人理念：德技并修、知行合一。每年举办"工电技能文化节""工匠精神演讲比赛"等活动。</p>
+                    <div class="card-inner">
+                        <div class="school-icon">💪</div>
+                        <h3>系部文化</h3>
+                        <p>系训：精工强能、笃行致远。育人理念：德技并修、知行合一。每年举办"工电技能文化节""工匠精神演讲比赛"等活动。</p>
+                    </div>
                 </div>
                 <div class="school-card">
-                    <div class="school-icon">📞</div>
-                    <h3>联系信息</h3>
-                    <p>学校官网：<a href="https://www.ttjx.com.cn" target="_blank" class="link">www.ttjx.com.cn</a><br>地址：太原市小店区坞城东街20号三教学楼<br>招生咨询：0351-2630291</p>
+                    <div class="card-inner">
+                        <div class="school-icon">📞</div>
+                        <h3>联系信息</h3>
+                        <p>学校官网：<a href="https://www.ttjx.com.cn" target="_blank" class="link">www.ttjx.com.cn</a><br>地址：太原市小店区坞城东街20号三教学楼<br>招生咨询：0351-2630291</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2551,7 +2597,7 @@
         <p class="footer-text">从2025到未来，星河璀璨</p>
         
         <div class="thank-you">
-            <p class="thank-title">💝 感恩寄语</p>
+            <p class="thank-title">💝 寄语</p>
             <p class="thank-text">衷心感谢铁道工电系全体教职工的辛勤耕耘与悉心教诲，是你们的言传身教照亮了学子们的前行之路。</p>
             <p class="thank-text">感谢每一位并肩前行的同学，愿我们在各自的人生轨道上继续闪耀光芒。</p>
             <p class="thank-text">愿学弟学妹们秉承"精工强能、笃行致远"的系训，以梦为马，不负韶华，书写属于你们的精彩篇章！</p>
@@ -2795,11 +2841,11 @@
                 });
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
+        function initMusicPlayer() {
             var api1 = 'https://api.i-meto.com/meting/api?server=netease&type=playlist&id=' + PLAYLIST_ID;
             var api2 = 'https://api.injahow.cn/meting/?server=netease&type=playlist&id=' + PLAYLIST_ID;
             tryFetch(api1, api2);
-        });
+        }
     </script>
     <script>
         // 创建星星背景 - 性能优化版
@@ -2839,14 +2885,23 @@
 
         // 创建流星 - 性能优化版
         function createMeteors() {
-            const container = document.getElementById('meteors');
+            let container = document.getElementById('meteors');
+            
+            // 如果容器不存在，创建一个
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'meteors';
+                container.className = 'bg-layer';
+                document.body.appendChild(container);
+            }
+            
             const isMobile = window.innerWidth <= 768;
-            const meteorInterval = isMobile ? 20000 : 15000; // 移动端减少流星频率
+            const meteorInterval = isMobile ? 20000 : 15000;
             
             let meteorTimer = null;
             
             function spawnMeteor() {
-                if (document.hidden) return; // 页面隐藏时不创建流星
+                if (document.hidden) return;
                 const meteor = document.createElement('div');
                 meteor.className = 'meteor';
                 meteor.style.left = (Math.random() * 40 + 60) + '%';
@@ -2865,7 +2920,7 @@
                     meteorTimer = null;
                 } else if (!meteorTimer) {
                     meteorTimer = setInterval(spawnMeteor, meteorInterval);
-                    spawnMeteor(); // 页面可见时立即创建一颗
+                    spawnMeteor();
                 }
             });
         }
@@ -3285,6 +3340,7 @@
             initGlobalScrollHandler();
             loadMessages();
             initTypingEffect();
+            initMusicPlayer();
             initMobileNav();
 
             if (!isTouch) {
@@ -3431,30 +3487,47 @@
             const cards = document.querySelectorAll('.about-card, .achievement-card, .school-card');
             
             cards.forEach(card => {
+                let rafId = null;
+                
                 card.addEventListener('mousemove', (e) => {
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left - rect.width / 2;
-                    const y = e.clientY - rect.top - rect.height / 2;
+                    if (rafId) cancelAnimationFrame(rafId);
                     
-                    card.style.transform = `translateY(-10px) rotateX(${y * 0.02}deg) rotateY(${-x * 0.02}deg)`;
+                    rafId = requestAnimationFrame(() => {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left - rect.width / 2;
+                        const y = e.clientY - rect.top - rect.height / 2;
+                        
+                        card.style.transform = `translateY(-10px) rotateX(${y * 0.02}deg) rotateY(${-x * 0.02}deg)`;
+                        rafId = null;
+                    });
                 });
                 
                 card.addEventListener('mouseleave', () => {
+                    if (rafId) cancelAnimationFrame(rafId);
                     card.style.transform = '';
                 });
             });
         }
 
-        // 鼠标跟随光效
+        // 鼠标跟随光效 - 修复位置偏移问题
         function initCursorGlow() {
             const cursorGlow = document.createElement('div');
             cursorGlow.className = 'cursor-glow';
             cursorGlow.id = 'cursorGlow';
             document.body.appendChild(cursorGlow);
 
+            let rafId = null;
+            let lastX = 0, lastY = 0;
+
             document.addEventListener('mousemove', (e) => {
-                cursorGlow.style.left = e.clientX + 'px';
-                cursorGlow.style.top = e.clientY + 'px';
+                if (rafId) return;
+                rafId = requestAnimationFrame(() => {
+                    lastX = e.clientX;
+                    lastY = e.clientY;
+                    cursorGlow.style.left = lastX + 'px';
+                    cursorGlow.style.top = lastY + 'px';
+                    rafId = null;
+                });
             });
 
             document.addEventListener('mouseenter', () => {
@@ -3465,7 +3538,6 @@
                 cursorGlow.style.opacity = '0';
             });
 
-            // 点击爆炸效果
             document.addEventListener('click', (e) => {
                 createExplosion(e.clientX, e.clientY);
             });
