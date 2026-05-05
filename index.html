@@ -13,15 +13,25 @@
             font-size: 16px;
         }
         
+        html {
+            overflow-x: hidden;
+            touch-action: pan-y;
+            -webkit-overflow-scrolling: touch;
+        }
+        
         body {
             font-family: 'Microsoft YaHei', 'PingFang SC', -apple-system, sans-serif;
             background: #020205;
             color: #fff;
             overflow-x: hidden;
+            overflow-y: auto;
             line-height: 1.6;
             -webkit-text-size-adjust: 100%;
             -ms-text-size-adjust: 100%;
             text-size-adjust: 100%;
+            touch-action: pan-y;
+            width: 100%;
+            max-width: 100%;
         }
         
         @media screen and (max-width: 1200px) {
@@ -3179,6 +3189,42 @@
             }, 500);
         }
 
+        // 防止水平滑动
+        function preventHorizontalScroll() {
+            let touchStartX = 0;
+            let touchStartY = 0;
+            let isScrolling = false;
+
+            document.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+                isScrolling = true;
+            }, { passive: true });
+
+            document.addEventListener('touchmove', (e) => {
+                if (!isScrolling) return;
+                
+                const currentX = e.touches[0].clientX;
+                const currentY = e.touches[0].clientY;
+                const deltaX = Math.abs(currentX - touchStartX);
+                const deltaY = Math.abs(currentY - touchStartY);
+
+                if (deltaX > deltaY && deltaX > 10) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+
+            document.addEventListener('touchend', () => {
+                isScrolling = false;
+            }, { passive: true });
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollX !== 0) {
+                    window.scrollTo(0, window.scrollY);
+                }
+            });
+        }
+
         // 初始化
         document.addEventListener('DOMContentLoaded', () => {
             const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
@@ -3197,6 +3243,7 @@
                 }, 800);
             }
 
+            preventHorizontalScroll();
             createStars();
             createMeteors();
             animateCounters();
