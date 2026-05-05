@@ -219,6 +219,7 @@
             backdrop-filter: blur(30px);
             border-bottom: 1px solid rgba(255,255,255,0.05);
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform, padding;
         }
 
         nav.scrolled {
@@ -380,6 +381,7 @@
             opacity: 0;
             animation: fadeInUp 1s ease 0.3s forwards;
             font-weight: 600;
+            will-change: opacity, transform;
         }
 
         .hero-title {
@@ -389,6 +391,7 @@
             opacity: 0;
             animation: fadeInUp 1s ease 0.5s forwards;
             letter-spacing: -4px;
+            will-change: opacity, transform;
         }
 
         .hero-title .line1 {
@@ -1757,6 +1760,9 @@
         .thank-you {
             margin-top: 30px;
             padding: 25px 30px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
             background: linear-gradient(145deg, rgba(245,166,35,0.12), rgba(233,69,96,0.1), rgba(155,89,182,0.08));
             border: 1px solid rgba(245,166,35,0.25);
             border-radius: 20px;
@@ -3551,10 +3557,12 @@
 
             overlay.addEventListener('click', closeMenu);
 
-            navLinks.addEventListener('click', function(e) {
-                if (navLinks.classList.contains('open') && e.target.tagName === 'A') {
-                    closeMenu();
-                }
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (navLinks.classList.contains('open')) {
+                        closeMenu();
+                    }
+                });
             });
 
             window.addEventListener('resize', () => {
