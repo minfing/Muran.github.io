@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=0.5, user-scalable=yes">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' https://*.ax1x.com https://*.music.126.net data:; connect-src 'self' https://api.i-meto.com https://api.injahow.cn https://music.163.com; media-src https://music.163.com; font-src 'self'">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="https://api.i-meto.com">
+    <link rel="dns-prefetch" href="https://music.163.com">
     <title>铁道工电系 & 星河未满</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
     <style>
@@ -3474,9 +3478,22 @@
         });
 
         function initAdminMode() {
-            const ADMIN_PASSWORD = '080610';
+            const ADMIN_PASSWORD_HASH = 'b3d0954538cf37a0aea1291ceaf90c11e8aae2715f5cbd9a34ddb38d8467cb80';
+            var loginAttempts = 0;
+            var lockoutUntil = 0;
+            var MAX_ATTEMPTS = 5;
+            var LOCKOUT_MINUTES = 15;
 
-            const badge = document.createElement('div');
+            async function verifyPassword(input) {
+                var encoder = new TextEncoder();
+                var data = encoder.encode(input);
+                var hashBuffer = await crypto.subtle.digest('SHA-256', data);
+                var hashArray = Array.from(new Uint8Array(hashBuffer));
+                var hashHex = hashArray.map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+                return hashHex === ADMIN_PASSWORD_HASH;
+            }
+
+            var badge = document.createElement('div');
             badge.className = 'admin-badge';
             badge.id = 'adminBadge';
             badge.textContent = '管理员模式';
@@ -3487,29 +3504,24 @@
                 document.getElementById('guestbook').classList.add('admin-mode');
             }
 
-            const overlay = document.createElement('div');
+            var overlay = document.createElement('div');
             overlay.className = 'password-overlay';
             overlay.id = 'pwOverlay';
-            overlay.innerHTML = `
-                <div class="password-dialog">
-                    <h3>🔐 管理员验证</h3>
-                    <p class="pw-sub">请输入密码以进入管理员模式</p>
-                    <input type="password" id="pwInput" placeholder="输入密码" autocomplete="off">
-                    <p class="pw-error" id="pwError"></p>
-                    <div class="pw-btns">
-                        <button class="pw-cancel" id="pwCancel">取消</button>
-                        <button class="pw-confirm" id="pwConfirm">确认</button>
-                    </div>
-                </div>
-            `;
+            overlay.innerHTML = '\n                <div class="password-dialog">\n                    <h3>\u{1F510} 管理员验证</h3>\n                    <p class="pw-sub">请输入密码以进入管理员模式</p>\n                    <input type="password" id="pwInput" placeholder="输入密码" autocomplete="off">\n                    <p class="pw-error" id="pwError"></p>\n                    <div class="pw-btns">\n                        <button class="pw-cancel" id="pwCancel">取消</button>\n                        <button class="pw-confirm" id="pwConfirm">确认</button>\n                    </div>\n                </div>\n            ';
             document.body.appendChild(overlay);
 
             function showPasswordDialog() {
+                var now = Date.now();
+                if (lockoutUntil > now) {
+                    var remainMin = Math.ceil((lockoutUntil - now) / 60000);
+                    alert('\u767B\u5F55\u5C1D\u8BD5\u8FC7\u591A\uFF0C\u8BF7 ' + remainMin + ' \u5206\u949F\u540E\u91CD\u8BD5');
+                    return;
+                }
                 overlay.classList.add('active');
-                const input = document.getElementById('pwInput');
+                var input = document.getElementById('pwInput');
                 document.getElementById('pwError').textContent = '';
                 input.value = '';
-                setTimeout(() => input.focus(), 100);
+                setTimeout(function() { input.focus(); }, 100);
             }
 
             function hidePasswordDialog() {
@@ -3517,32 +3529,57 @@
             }
 
             document.getElementById('pwCancel').addEventListener('click', hidePasswordDialog);
-            overlay.addEventListener('click', (e) => {
+            overlay.addEventListener('click', function(e) {
                 if (e.target === overlay) hidePasswordDialog();
             });
 
-            document.getElementById('pwConfirm').addEventListener('click', () => {
-                const input = document.getElementById('pwInput');
-                if (input.value === ADMIN_PASSWORD) {
+            document.getElementById('pwConfirm').addEventListener('click', async function() {
+                var input = document.getElementById('pwInput');
+                var errorEl = document.getElementById('pwError');
+
+                var now = Date.now();
+                if (lockoutUntil > now) {
+                    var remainMin = Math.ceil((lockoutUntil - now) / 60000);
+                    errorEl.textContent = '\u5C1D\u8BD5\u6B21\u6570\u8FC7\u591A\uFF0C\u8BF7 ' + remainMin + ' \u5206\u949F\u540E\u91CD\u8BD5';
+                    return;
+                }
+
+                if (loginAttempts >= MAX_ATTEMPTS) {
+                    lockoutUntil = now + LOCKOUT_MINUTES * 60 * 1000;
+                    errorEl.textContent = '\u5C1D\u8BD5\u6B21\u6570\u8FC7\u591A\uFF0C\u8BF7 ' + LOCKOUT_MINUTES + ' \u5206\u949F\u540E\u91CD\u8BD5';
+                    return;
+                }
+
+                var isValid = await verifyPassword(input.value);
+                if (isValid) {
+                    loginAttempts = 0;
+                    lockoutUntil = 0;
                     hidePasswordDialog();
                     toggleAdmin();
                 } else {
-                    document.getElementById('pwError').textContent = '密码错误，请重试';
+                    loginAttempts++;
+                    var remaining = MAX_ATTEMPTS - loginAttempts;
+                    if (remaining <= 0) {
+                        lockoutUntil = now + LOCKOUT_MINUTES * 60 * 1000;
+                        errorEl.textContent = '\u5BC6\u7801\u9519\u8BEF\uFF0C\u5DF2\u9501\u5B9A ' + LOCKOUT_MINUTES + ' \u5206\u949F';
+                    } else {
+                        errorEl.textContent = '\u5BC6\u7801\u9519\u8BEF\uFF0C\u8FD8\u5269 ' + remaining + ' \u6B21\u673A\u4F1A';
+                    }
                     input.value = '';
                     input.focus();
                 }
             });
 
-            document.getElementById('pwInput').addEventListener('keydown', (e) => {
+            document.getElementById('pwInput').addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') {
                     document.getElementById('pwConfirm').click();
                 }
             });
 
-            const footerLogo = document.getElementById('footerLogo');
-            let clickTimer = null;
+            var footerLogo = document.getElementById('footerLogo');
+            var clickTimer = null;
 
-            footerLogo.addEventListener('click', () => {
+            footerLogo.addEventListener('click', function() {
                 if (clickTimer) {
                     clearTimeout(clickTimer);
                     clickTimer = null;
@@ -3554,7 +3591,7 @@
 
                     showPasswordDialog();
                 } else {
-                    clickTimer = setTimeout(() => { clickTimer = null; }, 400);
+                    clickTimer = setTimeout(function() { clickTimer = null; }, 400);
                 }
             });
         }
