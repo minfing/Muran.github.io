@@ -1755,28 +1755,92 @@
         }
 
         .thank-you {
-            margin-top: 30px;
-            padding: 25px 35px;
-            background: linear-gradient(135deg, rgba(245,166,35,0.08), rgba(233,69,96,0.08));
-            border: 1px solid rgba(245,166,35,0.15);
-            border-radius: 16px;
+            margin-top: 40px;
+            padding: 40px 45px;
+            background: linear-gradient(145deg, rgba(245,166,35,0.12), rgba(233,69,96,0.1), rgba(155,89,182,0.08));
+            border: 1px solid rgba(245,166,35,0.25);
+            border-radius: 24px;
             text-align: center;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 8px 32px rgba(245,166,35,0.1),
+                0 0 60px rgba(233,69,96,0.05),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        .thank-you::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                from 0deg, 
+                transparent 0deg, 
+                rgba(245,166,35,0.08) 45deg, 
+                transparent 90deg, 
+                rgba(233,69,96,0.08) 135deg, 
+                transparent 180deg,
+                rgba(155,89,182,0.08) 225deg,
+                transparent 270deg,
+                rgba(245,166,35,0.08) 315deg,
+                transparent 360deg
+            );
+            animation: thankRotate 20s linear infinite;
+        }
+
+        @keyframes thankRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .thank-inner {
+            position: relative;
+            z-index: 1;
         }
 
         .thank-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #f5a623;
-            margin-bottom: 12px;
-            letter-spacing: 2px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f5a623, #e94560, #9b59b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, rgba(245,166,35,0.15), rgba(233,69,96,0.15));
+            border-radius: 30px;
+            border: 1px solid rgba(245,166,35,0.3);
         }
 
         .thank-text {
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.55);
-            line-height: 1.8;
-            margin: 8px 0;
+            font-size: 1rem;
+            color: rgba(255,255,255,0.7);
+            line-height: 2;
+            margin: 14px 0;
+            text-align: justify;
+            text-indent: 2em;
+            position: relative;
+        }
+
+        .thank-text:first-of-type {
+            margin-top: 0;
+        }
+
+        .thank-text:last-of-type {
+            margin-bottom: 0;
+            text-align: center;
+            text-indent: 0;
+            font-weight: 600;
+            color: rgba(245,166,35,0.9);
+            letter-spacing: 2px;
         }
 
         .footer-hearts {
@@ -2597,11 +2661,13 @@
         <p class="footer-text">从2025到未来，星河璀璨</p>
         
         <div class="thank-you">
-            <p class="thank-title">💝 寄语</p>
-            <p class="thank-text">衷心感谢铁道工电系全体教职工的辛勤耕耘与悉心教诲，是你们的言传身教照亮了学子们的前行之路。</p>
-            <p class="thank-text">感谢每一位并肩前行的同学，愿我们在各自的人生轨道上继续闪耀光芒。</p>
-            <p class="thank-text">愿学弟学妹们秉承"精工强能、笃行致远"的系训，以梦为马，不负韶华，书写属于你们的精彩篇章！</p>
-            <p class="thank-text">铁道工电系的精神将永远传承，星河璀璨，未来可期！</p>
+            <div class="thank-inner">
+                <p class="thank-title">💝 寄语</p>
+                <p class="thank-text">衷心感谢铁道工电系全体教职工的辛勤耕耘与悉心教诲，是你们的言传身教照亮了学子们的前行之路。</p>
+                <p class="thank-text">感谢每一位并肩前行的同学，愿我们在各自的人生轨道上继续闪耀光芒。</p>
+                <p class="thank-text">愿学弟学妹们秉承"精工强能、笃行致远"的系训，以梦为马，不负韶华，书写属于你们的精彩篇章！</p>
+                <p class="thank-text">铁道工电系的精神将永远传承，星河璀璨，未来可期！</p>
+            </div>
         </div>
         
         <div class="footer-hearts">💫</div>
