@@ -1805,16 +1805,13 @@
 
         .thank-inner {
             position: relative;
-            z-index: 1;
+            z-index: 2;
         }
 
         .thank-title {
             font-size: 1.2rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #f5a623, #e94560, #9b59b6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #f5a623;
             margin-bottom: 15px;
             letter-spacing: 2px;
             display: inline-flex;
@@ -1827,13 +1824,15 @@
         }
 
         .thank-text {
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.7);
-            line-height: 1.7;
-            margin: 8px 0;
-            text-align: justify;
-            text-indent: 2em;
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.85);
+            line-height: 2;
+            margin: 12px 0;
+            text-align: left;
+            text-indent: 0;
             position: relative;
+            padding-left: 20px;
+            border-left: 2px solid rgba(245,166,35,0.3);
         }
 
         .thank-text:first-of-type {
@@ -1843,10 +1842,14 @@
         .thank-text:last-of-type {
             margin-bottom: 0;
             text-align: center;
-            text-indent: 0;
+            padding-left: 0;
+            border-left: none;
             font-weight: 600;
-            color: rgba(245,166,35,0.9);
+            color: #f5a623;
             letter-spacing: 2px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(245,166,35,0.2);
         }
 
         .footer-hearts {
@@ -3081,31 +3084,28 @@
 
         // 平滑滚动
         function initSmoothScroll() {
-            const navLinks = document.querySelectorAll('nav a');
-            
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    const href = this.getAttribute('href');
+            // 处理所有导航链接点击
+            document.body.addEventListener('click', function(e) {
+                const link = e.target.closest('nav a');
+                if (!link) return;
+                
+                const href = link.getAttribute('href');
+                if (!href || href === '#' || !href.startsWith('#')) return;
+                
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const target = document.querySelector(href);
+                if (target) {
+                    const navHeight = document.querySelector('nav').offsetHeight;
+                    const scrollPosition = href === '#hero' ? 0 : target.offsetTop - navHeight + 10;
                     
-                    if (!href || href === '#' || !href.startsWith('#')) {
-                        return;
-                    }
-                    
-                    e.preventDefault();
-                    
-                    const target = document.querySelector(href);
-                    if (target) {
-                        const offsetTop = target.offsetTop;
-                        const navHeight = document.querySelector('nav').offsetHeight;
-                        const scrollPosition = href === '#hero' ? 0 : offsetTop - navHeight + 10;
-                        
-                        window.scrollTo({
-                            top: scrollPosition,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
+                    window.scrollTo({
+                        top: scrollPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            }, true);
         }
 
         function initGlobalScrollHandler() {
