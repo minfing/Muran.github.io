@@ -1755,11 +1755,11 @@
         }
 
         .thank-you {
-            margin-top: 40px;
-            padding: 40px 45px;
+            margin-top: 30px;
+            padding: 25px 30px;
             background: linear-gradient(145deg, rgba(245,166,35,0.12), rgba(233,69,96,0.1), rgba(155,89,182,0.08));
             border: 1px solid rgba(245,166,35,0.25);
-            border-radius: 24px;
+            border-radius: 20px;
             text-align: center;
             backdrop-filter: blur(20px);
             position: relative;
@@ -1803,28 +1803,28 @@
         }
 
         .thank-title {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 700;
             background: linear-gradient(135deg, #f5a623, #e94560, #9b59b6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 20px;
-            letter-spacing: 3px;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 12px 24px;
+            gap: 8px;
+            padding: 8px 20px;
             background: linear-gradient(135deg, rgba(245,166,35,0.15), rgba(233,69,96,0.15));
-            border-radius: 30px;
+            border-radius: 25px;
             border: 1px solid rgba(245,166,35,0.3);
         }
 
         .thank-text {
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: rgba(255,255,255,0.7);
-            line-height: 2;
-            margin: 14px 0;
+            line-height: 1.7;
+            margin: 8px 0;
             text-align: justify;
             text-indent: 2em;
             position: relative;
@@ -3075,28 +3075,30 @@
 
         // 平滑滚动
         function initSmoothScroll() {
-            document.body.addEventListener('click', function(e) {
-                const anchor = e.target.closest('nav a');
-                if (!anchor) return;
-                
-                const href = anchor.getAttribute('href');
-                if (!href || href === '#' || !href.startsWith('#')) {
-                    return;
-                }
-                
-                e.preventDefault();
-                
-                const target = document.querySelector(href);
-                if (target) {
-                    const offsetTop = target.offsetTop;
-                    const navHeight = document.querySelector('nav').offsetHeight;
-                    const scrollPosition = href === '#hero' ? 0 : offsetTop - navHeight + 10;
+            const navLinks = document.querySelectorAll('nav a');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
                     
-                    window.scrollTo({
-                        top: scrollPosition,
-                        behavior: 'smooth'
-                    });
-                }
+                    if (!href || href === '#' || !href.startsWith('#')) {
+                        return;
+                    }
+                    
+                    e.preventDefault();
+                    
+                    const target = document.querySelector(href);
+                    if (target) {
+                        const offsetTop = target.offsetTop;
+                        const navHeight = document.querySelector('nav').offsetHeight;
+                        const scrollPosition = href === '#hero' ? 0 : offsetTop - navHeight + 10;
+                        
+                        window.scrollTo({
+                            top: scrollPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
             });
         }
 
