@@ -1250,6 +1250,256 @@
             font-size: 0.98rem;
         }
 
+        .admin-badge {
+            display: none;
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: linear-gradient(135deg, #e94560, #f5a623);
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            z-index: 999;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        .admin-badge.visible { display: block; }
+
+        .password-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .password-overlay.active { display: flex; }
+
+        .password-dialog {
+            background: linear-gradient(145deg, #1a1a24, #12121a);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 35px 30px 25px;
+            width: 340px;
+            max-width: 90vw;
+            text-align: center;
+            animation: modalIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.9) translateY(-20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .password-dialog h3 {
+            font-size: 1.1rem;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .password-dialog .pw-sub {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.35);
+            margin-bottom: 20px;
+        }
+
+        .password-dialog input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            text-align: center;
+            outline: none;
+            letter-spacing: 3px;
+            transition: border-color 0.2s ease;
+        }
+
+        .password-dialog input:focus {
+            border-color: #f5a623;
+            box-shadow: 0 0 20px rgba(245,166,35,0.1);
+        }
+
+        .password-dialog .pw-error {
+            color: #e94560;
+            font-size: 0.82rem;
+            margin-top: 10px;
+            min-height: 20px;
+            transition: opacity 0.2s ease;
+        }
+
+        .password-dialog .pw-btns {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .pw-btns button {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .pw-confirm {
+            background: linear-gradient(135deg, #f5a623, #e94560);
+            color: #fff;
+        }
+
+        .pw-confirm:hover { opacity: 0.9; }
+
+        .pw-cancel {
+            background: rgba(255,255,255,0.06);
+            color: rgba(255,255,255,0.5);
+        }
+
+        .pw-cancel:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+
+        .message-actions {
+            display: none;
+            gap: 8px;
+            margin-left: auto;
+        }
+
+        .admin-mode .message-actions { display: flex; }
+
+        .action-btn {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            padding: 0;
+        }
+
+        .action-btn:hover {
+            background: rgba(233,69,96,0.2);
+            border-color: rgba(233,69,96,0.4);
+            color: #fff;
+        }
+
+        .action-btn.delete-btn:hover {
+            background: rgba(231,76,60,0.25);
+            border-color: rgba(231,76,60,0.5);
+        }
+
+        .message-edit-area {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .message-edit-area.active { display: block; }
+
+        .message-edit-area textarea {
+            width: 100%;
+            padding: 10px 12px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 0.9rem;
+            font-family: inherit;
+            line-height: 1.6;
+            resize: vertical;
+            min-height: 60px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .message-edit-area textarea:focus {
+            border-color: #f5a623;
+            box-shadow: 0 0 15px rgba(245,166,35,0.1);
+        }
+
+        .edit-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .edit-save, .edit-cancel {
+            padding: 6px 16px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .edit-save {
+            background: linear-gradient(135deg, #f5a623, #e94560);
+            color: #fff;
+        }
+
+        .edit-save:hover { opacity: 0.9; }
+
+        .edit-cancel {
+            background: rgba(255,255,255,0.06);
+            color: rgba(255,255,255,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .edit-cancel:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+
+        .clear-all-btn {
+            display: none;
+            width: 100%;
+            padding: 12px 20px;
+            margin-top: 15px;
+            background: rgba(231,76,60,0.1);
+            border: 1px solid rgba(231,76,60,0.25);
+            color: rgba(231,76,60,0.7);
+            border-radius: 12px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .admin-mode .clear-all-btn { display: block; }
+
+        .clear-all-btn:hover {
+            background: rgba(231,76,60,0.2);
+            color: #e74c3c;
+        }
+
+        .message-content.editing { display: none; }
+
+        .footer-admin-hint {
+            display: none;
+            color: rgba(255,255,255,0.2);
+            font-size: 0.72rem;
+            margin-top: 8px;
+            transition: color 0.3s ease;
+        }
+
+        footer:hover .footer-admin-hint { display: block; }
+
         /* 回到顶部 */
         .scroll-top {
             position: fixed;
@@ -1701,6 +1951,11 @@
 
             .cursor-glow { display: none; }
 
+            .action-btn { width: 36px; height: 36px; border-radius: 10px; }
+            .admin-badge { top: 72px; right: 12px; font-size: 0.7rem; padding: 5px 12px; }
+            .password-dialog { padding: 28px 22px 20px; }
+            .password-dialog h3 { font-size: 1rem; }
+
             .about-card:hover, .achievement-card:hover, .school-card:hover, .timeline-card:hover {
                 transform: none;
             }
@@ -1770,6 +2025,10 @@
 
             .scroll-top { width: 40px; height: 40px; bottom: 16px; right: 16px; }
             .scroll-top::before { font-size: 18px; }
+
+            .action-btn { width: 34px; height: 34px; }
+            .edit-save, .edit-cancel { font-size: 0.78rem; padding: 5px 12px; }
+            .clear-all-btn { font-size: 0.82rem; padding: 10px 16px; }
         }
     </style>
 </head>
@@ -2021,9 +2280,10 @@
     </section>
 
     <footer>
-        <div class="footer-logo">铁道工电系 · 星河未满</div>
+        <div class="footer-logo" id="footerLogo" title="双击进入管理员模式">铁道工电系 · 星河未满</div>
         <p class="footer-text">记录成长 · 珍藏回忆</p>
         <p class="footer-text">从2025到未来，星河璀璨</p>
+        <p class="footer-admin-hint">双击此处进入管理员模式</p>
         <div class="footer-hearts">💫</div>
     </footer>
 
@@ -2215,12 +2475,23 @@
             });
         }
 
-        // 留言板功能
         let messages = JSON.parse(localStorage.getItem('guestMessages') || '[]');
+        let isAdmin = sessionStorage.getItem('adminMode') === 'true';
+
+        function syncMessages() {
+            localStorage.setItem('guestMessages', JSON.stringify(messages));
+        }
 
         function loadMessages() {
             const container = document.getElementById('messagesContainer');
-            
+            const guestbookSection = document.getElementById('guestbook');
+
+            if (isAdmin) {
+                guestbookSection.classList.add('admin-mode');
+            } else {
+                guestbookSection.classList.remove('admin-mode');
+            }
+
             if (messages.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
@@ -2228,25 +2499,91 @@
                         <p>暂无留言</p>
                         <p class="empty-hint">成为第一个留言的人吧！</p>
                     </div>
+                    ${isAdmin ? '<button class="clear-all-btn" onclick="clearAllMessages()" style="display:block;">清空全部留言</button>' : ''}
                 `;
                 return;
             }
-            
-            container.innerHTML = messages.map(msg => `
-                <div class="message-item">
+
+            container.innerHTML = messages.map((msg, index) => `
+                <div class="message-item" id="msg-${index}">
                     <div class="message-header">
                         <span class="message-author">${escapeHtml(msg.name)}</span>
+                        <div class="message-actions">
+                            <button class="action-btn edit-btn" onclick="startEdit(${index})" title="编辑">✎</button>
+                            <button class="action-btn delete-btn" onclick="deleteMessage(${index})" title="删除">×</button>
+                        </div>
                         <span class="message-time">${msg.time}</span>
                     </div>
-                    <p class="message-content">${escapeHtml(msg.content)}</p>
+                    <p class="message-content" id="msg-content-${index}">${escapeHtml(msg.content)}</p>
+                    <div class="message-edit-area" id="msg-edit-${index}">
+                        <textarea id="msg-edit-textarea-${index}">${escapeHtml(msg.content)}</textarea>
+                        <div class="edit-actions">
+                            <button class="edit-save" onclick="saveEdit(${index})">保存</button>
+                            <button class="edit-cancel" onclick="cancelEdit(${index})">取消</button>
+                        </div>
+                    </div>
                 </div>
-            `).join('');
+            `).join('') + (isAdmin ? '<button class="clear-all-btn" onclick="clearAllMessages()">清空全部留言</button>' : '');
         }
 
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
+        }
+
+        function deleteMessage(index) {
+            if (!confirm(`确定要删除「${messages[index].name}」的留言吗？此操作不可撤销。`)) return;
+            messages.splice(index, 1);
+            syncMessages();
+            loadMessages();
+        }
+
+        function startEdit(index) {
+            document.getElementById('msg-content-' + index).classList.add('editing');
+            document.getElementById('msg-edit-' + index).classList.add('active');
+            const textarea = document.getElementById('msg-edit-textarea-' + index);
+            textarea.focus();
+            textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+        }
+
+        function cancelEdit(index) {
+            document.getElementById('msg-content-' + index).classList.remove('editing');
+            document.getElementById('msg-edit-' + index).classList.remove('active');
+            document.getElementById('msg-edit-textarea-' + index).value = messages[index].content;
+        }
+
+        function saveEdit(index) {
+            const newContent = document.getElementById('msg-edit-textarea-' + index).value.trim();
+            if (!newContent) {
+                alert('留言内容不能为空！');
+                return;
+            }
+            messages[index].content = newContent;
+            syncMessages();
+            loadMessages();
+        }
+
+        function clearAllMessages() {
+            if (!confirm(`确定要清空全部 ${messages.length} 条留言吗？此操作不可撤销。`)) return;
+            messages = [];
+            syncMessages();
+            loadMessages();
+        }
+
+        function toggleAdmin() {
+            isAdmin = !isAdmin;
+            sessionStorage.setItem('adminMode', isAdmin.toString());
+
+            const badge = document.getElementById('adminBadge');
+            if (isAdmin) {
+                badge.classList.add('visible');
+            } else {
+                badge.classList.remove('visible');
+                document.querySelectorAll('.message-edit-area.active').forEach(el => el.classList.remove('active'));
+                document.querySelectorAll('.message-content.editing').forEach(el => el.classList.remove('editing'));
+            }
+            loadMessages();
         }
 
         function submitMessage() {
@@ -2265,7 +2602,7 @@
             const time = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
             
             messages.unshift({ name, content, time });
-            localStorage.setItem('guestMessages', JSON.stringify(messages));
+            syncMessages();
             
             nameInput.value = '';
             messageInput.value = '';
@@ -2296,7 +2633,95 @@
                 initCursorGlow();
                 initMagneticCards();
             }
+
+            initAdminMode();
         });
+
+        function initAdminMode() {
+            const ADMIN_PASSWORD = '080610';
+
+            const badge = document.createElement('div');
+            badge.className = 'admin-badge';
+            badge.id = 'adminBadge';
+            badge.textContent = '管理员模式';
+            document.body.appendChild(badge);
+
+            if (isAdmin) {
+                badge.classList.add('visible');
+                document.getElementById('guestbook').classList.add('admin-mode');
+            }
+
+            const overlay = document.createElement('div');
+            overlay.className = 'password-overlay';
+            overlay.id = 'pwOverlay';
+            overlay.innerHTML = `
+                <div class="password-dialog">
+                    <h3>🔐 管理员验证</h3>
+                    <p class="pw-sub">请输入密码以进入管理员模式</p>
+                    <input type="password" id="pwInput" placeholder="输入密码" autocomplete="off">
+                    <p class="pw-error" id="pwError"></p>
+                    <div class="pw-btns">
+                        <button class="pw-cancel" id="pwCancel">取消</button>
+                        <button class="pw-confirm" id="pwConfirm">确认</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+
+            function showPasswordDialog() {
+                overlay.classList.add('active');
+                const input = document.getElementById('pwInput');
+                document.getElementById('pwError').textContent = '';
+                input.value = '';
+                setTimeout(() => input.focus(), 100);
+            }
+
+            function hidePasswordDialog() {
+                overlay.classList.remove('active');
+            }
+
+            document.getElementById('pwCancel').addEventListener('click', hidePasswordDialog);
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) hidePasswordDialog();
+            });
+
+            document.getElementById('pwConfirm').addEventListener('click', () => {
+                const input = document.getElementById('pwInput');
+                if (input.value === ADMIN_PASSWORD) {
+                    hidePasswordDialog();
+                    toggleAdmin();
+                } else {
+                    document.getElementById('pwError').textContent = '密码错误，请重试';
+                    input.value = '';
+                    input.focus();
+                }
+            });
+
+            document.getElementById('pwInput').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    document.getElementById('pwConfirm').click();
+                }
+            });
+
+            const footerLogo = document.getElementById('footerLogo');
+            let clickTimer = null;
+
+            footerLogo.addEventListener('click', () => {
+                if (clickTimer) {
+                    clearTimeout(clickTimer);
+                    clickTimer = null;
+
+                    if (isAdmin) {
+                        toggleAdmin();
+                        return;
+                    }
+
+                    showPasswordDialog();
+                } else {
+                    clickTimer = setTimeout(() => { clickTimer = null; }, 400);
+                }
+            });
+        }
 
         function initMobileNav() {
             const hamburger = document.getElementById('hamburger');
