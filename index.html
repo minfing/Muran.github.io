@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=0.5, user-scalable=yes">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' https://*.ax1x.com https://*.music.126.net data:; connect-src 'self' https://api.i-meto.com https://api.injahow.cn https://music.163.com; media-src https://music.163.com; font-src 'self'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' https://*.ax1x.com https://*.music.126.net data:; connect-src 'self' https://api.i-meto.com https://api.injahow.cn https://music.163.com https://music.metowolf.com https://api.paugram.com; media-src https://music.163.com; font-src 'self'">
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="dns-prefetch" href="https://api.i-meto.com">
     <link rel="dns-prefetch" href="https://music.163.com">
@@ -2900,12 +2900,11 @@
             setTimeout(startLrcSync, 500);
         }
 
-        function tryFetch(apiUrl, nextUrl) {
+        function tryFetch() {
             const loadingEl = document.getElementById('musicLoading');
-            let attemptCount = 1;
-            if (nextUrl) attemptCount = 2;
-            
-            let currentAttempt = 1;
+            const apis = Array.prototype.slice.call(arguments);
+            const attemptCount = apis.length;
+            let currentAttempt = 0;
             
             function updateLoadingStatus(message) {
                 if (loadingEl) {
@@ -2916,48 +2915,47 @@
                 }
             }
             
-            updateLoadingStatus(`正在加载歌单... (${currentAttempt}/${attemptCount})`);
+            function fetchNext() {
+                if (currentAttempt >= apis.length) {
+                    updateLoadingStatus('使用本地歌单');
+                    setTimeout(() => {
+                        indexLrcData(FALLBACK_AUDIO, FALLBACK_LRC);
+                        createPlayer(FALLBACK_AUDIO);
+                    }, 500);
+                    return;
+                }
+                
+                currentAttempt++;
+                const apiUrl = apis[currentAttempt - 1];
+                updateLoadingStatus(`正在加载歌单... (${currentAttempt}/${attemptCount})`);
+                
+                fetch(apiUrl)
+                    .then(function(r) { return r.json(); })
+                    .then(function(data) {
+                        if (data && data.length) {
+                            updateLoadingStatus('加载成功！');
+                            setTimeout(() => {
+                                indexLrcData(data, null);
+                                createPlayer(data);
+                            }, 500);
+                        } else {
+                            fetchNext();
+                        }
+                    })
+                    .catch(function() {
+                        fetchNext();
+                    });
+            }
             
-            fetch(apiUrl)
-                .then(function(r) { return r.json(); })
-                .then(function(data) {
-                    if (data && data.length) {
-                        updateLoadingStatus('加载成功！');
-                        setTimeout(() => {
-                            indexLrcData(data, null);
-                            createPlayer(data);
-                        }, 500);
-                    } else if (nextUrl) {
-                        currentAttempt++;
-                        updateLoadingStatus(`切换备用源... (${currentAttempt}/${attemptCount})`);
-                        tryFetch(nextUrl, null);
-                    } else {
-                        updateLoadingStatus('使用本地歌单');
-                        setTimeout(() => {
-                            indexLrcData(FALLBACK_AUDIO, FALLBACK_LRC);
-                            createPlayer(FALLBACK_AUDIO);
-                        }, 500);
-                    }
-                })
-                .catch(function() {
-                    if (nextUrl) {
-                        currentAttempt++;
-                        updateLoadingStatus(`切换备用源... (${currentAttempt}/${attemptCount})`);
-                        tryFetch(nextUrl, null);
-                    } else {
-                        updateLoadingStatus('使用本地歌单');
-                        setTimeout(() => {
-                            indexLrcData(FALLBACK_AUDIO, FALLBACK_LRC);
-                            createPlayer(FALLBACK_AUDIO);
-                        }, 500);
-                    }
-                });
+            fetchNext();
         }
 
         function initMusicPlayer() {
             var api1 = 'https://api.i-meto.com/meting/api?server=netease&type=playlist&id=' + PLAYLIST_ID;
             var api2 = 'https://api.injahow.cn/meting/?server=netease&type=playlist&id=' + PLAYLIST_ID;
-            tryFetch(api1, api2);
+            var api3 = 'https://music.metowolf.com/api/meting/?server=netease&type=playlist&id=' + PLAYLIST_ID;
+            var api4 = 'https://api.paugram.com/meting/?server=netease&type=playlist&id=' + PLAYLIST_ID;
+            tryFetch(api1, api2, api3, api4);
         }
     </script>
     <script>
