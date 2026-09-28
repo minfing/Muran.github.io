@@ -3,13 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=0.5, user-scalable=yes">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; img-src 'self' https://*.ax1x.com https://*.music.126.net data:; connect-src 'self' https://api.i-meto.com https://api.injahow.cn https://music.163.com https://music.metowolf.com https://api.paugram.com; media-src https://music.163.com; font-src 'self' https://fonts.gstatic.com">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' https://*.ax1x.com https://*.music.126.net data:; connect-src 'self' https://api.i-meto.com https://api.injahow.cn https://music.163.com; media-src https://music.163.com; font-src 'self'">
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="https://api.i-meto.com">
     <link rel="dns-prefetch" href="https://music.163.com">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Noto+Serif+SC:wght@300;400;500;600&display=swap">
     <title>铁道工电系 & 星河未满</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
     <style>
@@ -2406,380 +2403,6 @@
                 scroll-behavior: auto !important;
             }
         }
-
-        /* =====================================================
-           简约奢华主题 (Minimalist Luxury) 覆盖样式
-           ===================================================== */
-        :root {
-            --lux-bg: #0c0c0e;
-            --lux-bg-soft: #141418;
-            --lux-text: #ece6d8;
-            --lux-text-dim: #a8a294;
-            --lux-text-muted: #6f6a5e;
-            --lux-accent: #c8a96e;
-            --lux-accent-soft: #d8c089;
-            --lux-accent-deep: #8a7445;
-            --lux-border: rgba(200, 169, 110, 0.14);
-            --lux-border-strong: rgba(200, 169, 110, 0.30);
-            --lux-card: rgba(255, 255, 255, 0.018);
-            --lux-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.7);
-            --lux-serif: 'Cormorant Garamond', 'Noto Serif SC', Georgia, serif;
-            --lux-cn: 'Noto Serif SC', 'Cormorant Garamond', serif;
-        }
-
-        html, body {
-            background: var(--lux-bg) !important;
-            color: var(--lux-text) !important;
-            font-family: var(--lux-cn);
-            letter-spacing: 0.01em;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background:
-                radial-gradient(ellipse 80% 50% at 50% -10%, rgba(200,169,110,0.06), transparent 60%),
-                radial-gradient(ellipse 60% 40% at 50% 110%, rgba(200,169,110,0.04), transparent 60%);
-            pointer-events: none;
-            z-index: 0;
-        }
-        body::after {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
-            opacity: 0.035;
-            pointer-events: none;
-            z-index: 0;
-            mix-blend-mode: overlay;
-        }
-
-        /* 背景层：去除太空元素 */
-        .bg-gradient {
-            background: var(--lux-bg) !important;
-        }
-        .bg-gradient::after {
-            background:
-                radial-gradient(ellipse at 50% 0%, rgba(200,169,110,0.05) 0%, transparent 55%),
-                radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0.5) 0%, transparent 55%) !important;
-            animation: none !important;
-            opacity: 1 !important;
-        }
-        #stars, #meteors { display: none !important; }
-        .glow-orbs { display: none !important; }
-
-        /* 页面加载器 */
-        .page-loader {
-            background: var(--lux-bg) !important;
-        }
-        .loader-circle {
-            border-top-color: var(--lux-accent) !important;
-            border-color: rgba(200,169,110,0.15) !important;
-            border-top-color: var(--lux-accent) !important;
-        }
-        .loader-text {
-            color: var(--lux-text-muted) !important;
-            letter-spacing: 6px !important;
-            font-family: var(--lux-serif);
-            font-weight: 400;
-        }
-
-        /* 导航 */
-        nav {
-            background: rgba(12,12,14,0.72) !important;
-            backdrop-filter: blur(14px) saturate(120%);
-            -webkit-backdrop-filter: blur(14px) saturate(120%);
-            border-bottom: 1px solid var(--lux-border) !important;
-        }
-        .nav-logo {
-            font-family: var(--lux-serif) !important;
-            color: var(--lux-text) !important;
-            letter-spacing: 0.08em;
-            font-weight: 500;
-        }
-        .nav-links a {
-            color: var(--lux-text-dim) !important;
-            letter-spacing: 0.06em;
-            transition: color .3s ease;
-        }
-        .nav-links a:hover { color: var(--lux-accent) !important; }
-        .nav-links a.active {
-            color: var(--lux-accent) !important;
-        }
-        .nav-links a.active::after {
-            background: var(--lux-accent) !important;
-        }
-
-        /* 区块标题 */
-        .section-tag {
-            color: var(--lux-accent) !important;
-            font-family: var(--lux-serif) !important;
-            letter-spacing: 0.45em !important;
-            font-weight: 500;
-        }
-        .section-title {
-            font-family: var(--lux-cn) !important;
-            color: var(--lux-text) !important;
-            font-weight: 500 !important;
-            letter-spacing: 0.04em;
-        }
-        .section-line {
-            background: linear-gradient(90deg, transparent, var(--lux-accent), transparent) !important;
-            height: 1px !important;
-            opacity: 0.7;
-        }
-
-        /* Hero */
-        .hero-subtitle {
-            color: var(--lux-accent) !important;
-            font-family: var(--lux-serif) !important;
-            letter-spacing: 0.6em !important;
-            font-weight: 400;
-        }
-        .hero-title {
-            font-family: var(--lux-cn) !important;
-            font-weight: 500 !important;
-            letter-spacing: 0.05em;
-        }
-        .hero-title .line1 { color: var(--lux-text) !important; }
-        .hero-title .line2 {
-            color: var(--lux-accent) !important;
-            font-style: italic;
-            font-family: var(--lux-serif);
-            font-weight: 400;
-        }
-        .hero-desc {
-            color: var(--lux-text-dim) !important;
-            letter-spacing: 0.35em;
-        }
-        .stat-number {
-            font-family: var(--lux-serif) !important;
-            color: var(--lux-accent) !important;
-            font-weight: 500;
-        }
-        .stat-label {
-            color: var(--lux-text-muted) !important;
-            letter-spacing: 0.12em;
-        }
-        .hero-bg-glow {
-            background: radial-gradient(circle, rgba(200,169,110,0.08), transparent 70%) !important;
-        }
-
-        /* 高亮文字 */
-        .highlight {
-            color: var(--lux-accent) !important;
-        }
-
-        /* 通用卡片 */
-        .about-card,
-        .achievement-card,
-        .school-card {
-            background: var(--lux-card) !important;
-            border: 1px solid var(--lux-border) !important;
-            border-radius: 2px !important;
-            box-shadow: var(--lux-shadow) !important;
-            transition: border-color .4s ease, transform .4s ease, background .4s ease;
-        }
-        .about-card:hover,
-        .achievement-card:hover,
-        .school-card:hover {
-            border-color: var(--lux-border-strong) !important;
-            background: rgba(200,169,110,0.03) !important;
-            transform: translateY(-2px);
-        }
-        .about-card h3,
-        .achievement-title,
-        .school-card h3 {
-            color: var(--lux-text) !important;
-            font-family: var(--lux-cn) !important;
-            font-weight: 500 !important;
-            letter-spacing: 0.03em;
-        }
-        .about-card p,
-        .achievement-desc,
-        .school-card p {
-            color: var(--lux-text-dim) !important;
-            line-height: 1.8;
-        }
-        .about-card-icon,
-        .achievement-icon,
-        .school-icon {
-            filter: saturate(0.7) brightness(1.05);
-        }
-        .achievement-year {
-            color: var(--lux-accent) !important;
-            font-family: var(--lux-serif);
-            letter-spacing: 0.1em;
-        }
-
-        /* 关于区二维码框 */
-        .qrcode-box {
-            border: 1px solid var(--lux-border) !important;
-            background: rgba(255,255,255,0.96) !important;
-        }
-        .qrcode-text { color: var(--lux-text-muted) !important; }
-
-        /* 时间线 */
-        .timeline-track {
-            background: linear-gradient(180deg, transparent, var(--lux-border-strong), transparent) !important;
-        }
-        .timeline-dot {
-            background: var(--lux-bg) !important;
-            border: 1px solid var(--lux-accent) !important;
-            box-shadow: 0 0 0 4px rgba(200,169,110,0.08) !important;
-        }
-        .timeline-card {
-            background: var(--lux-card) !important;
-            border: 1px solid var(--lux-border) !important;
-            border-radius: 2px !important;
-            box-shadow: var(--lux-shadow) !important;
-            transition: border-color .4s ease, transform .4s ease;
-        }
-        .timeline-card:hover {
-            border-color: var(--lux-border-strong) !important;
-            transform: translateY(-2px);
-        }
-        .timeline-date-badge {
-            color: var(--lux-accent) !important;
-            border: 1px solid var(--lux-border-strong) !important;
-            background: transparent !important;
-            font-family: var(--lux-serif);
-            letter-spacing: 0.05em;
-        }
-        .timeline-card h3 {
-            color: var(--lux-text) !important;
-            font-family: var(--lux-cn) !important;
-            font-weight: 500 !important;
-        }
-        .timeline-card p { color: var(--lux-text-dim) !important; line-height: 1.8; }
-
-        /* 表单 & 输入框 */
-        .form-group input,
-        .form-group textarea {
-            background: transparent !important;
-            border: none !important;
-            border-bottom: 1px solid var(--lux-border-strong) !important;
-            border-radius: 0 !important;
-            color: var(--lux-text) !important;
-            font-family: var(--lux-cn);
-            transition: border-color .3s ease;
-        }
-        .form-group input::placeholder,
-        .form-group textarea::placeholder {
-            color: var(--lux-text-muted) !important;
-        }
-        .form-group input:focus,
-        .form-group textarea:focus {
-            border-bottom-color: var(--lux-accent) !important;
-            outline: none;
-        }
-
-        /* 提交按钮 */
-        .submit-btn {
-            background: transparent !important;
-            border: 1px solid var(--lux-accent) !important;
-            color: var(--lux-accent) !important;
-            letter-spacing: 0.2em;
-            border-radius: 2px !important;
-            overflow: hidden;
-            transition: all .35s ease;
-        }
-        .submit-btn:hover {
-            background: var(--lux-accent) !important;
-            color: var(--lux-bg) !important;
-        }
-        .submit-btn .btn-glow {
-            background: linear-gradient(90deg, transparent, rgba(200,169,110,0.25), transparent) !important;
-        }
-
-        /* 留言消息 */
-        .message-item {
-            background: var(--lux-card) !important;
-            border: 1px solid var(--lux-border) !important;
-            border-radius: 2px !important;
-        }
-        .message-name { color: var(--lux-accent) !important; font-family: var(--lux-cn); }
-        .message-content { color: var(--lux-text-dim) !important; line-height: 1.8; }
-        .message-date { color: var(--lux-text-muted) !important; }
-
-        /* 空状态 */
-        .empty-state p { color: var(--lux-text-dim) !important; }
-        .empty-hint { color: var(--lux-text-muted) !important; }
-
-        /* 链接 */
-        .link, a.link {
-            color: var(--lux-accent) !important;
-            border-bottom: 1px solid rgba(200,169,110,0.4);
-            transition: color .3s, border-color .3s;
-        }
-        .link:hover { border-bottom-color: var(--lux-accent); }
-
-        /* 页脚 */
-        footer {
-            border-top: 1px solid var(--lux-border) !important;
-            background: rgba(8,8,10,0.6) !important;
-        }
-        .footer-logo {
-            font-family: var(--lux-serif) !important;
-            color: var(--lux-text) !important;
-            letter-spacing: 0.12em;
-            font-weight: 500;
-        }
-        .footer-text {
-            color: var(--lux-text-dim) !important;
-            letter-spacing: 0.1em;
-        }
-        .thank-title { color: var(--lux-accent) !important; font-family: var(--lux-cn); }
-        .thank-text { color: var(--lux-text-dim) !important; line-height: 2; }
-        .disclaimer p { color: var(--lux-text-muted) !important; }
-        .disclaimer-text { color: var(--lux-text-muted) !important; font-size: 0.78rem; }
-
-        /* APlayer 深色奢华适配 */
-        .aplayer {
-            background: var(--lux-card) !important;
-            border: 1px solid var(--lux-border) !important;
-            border-radius: 2px !important;
-            box-shadow: var(--lux-shadow) !important;
-            color: var(--lux-text) !important;
-        }
-        .aplayer .aplayer-info .aplayer-music .aplayer-title { color: var(--lux-text) !important; }
-        .aplayer .aplayer-info .aplayer-music .aplayer-author { color: var(--lux-text-dim) !important; }
-        .aplayer .aplayer-list ol li {
-            border-top: 1px solid var(--lux-border) !important;
-        }
-        .aplayer .aplayer-list ol li:hover { background: rgba(200,169,110,0.05) !important; }
-        .aplayer .aplayer-list ol li.aplayer-list-light { background: rgba(200,169,110,0.08) !important; }
-        .aplayer .aplayer-info .aplayer-controller .aplayer-bar-wrap .aplayer-bar .aplayer-played {
-            background: var(--lux-accent) !important;
-        }
-        .aplayer .aplayer-info .aplayer-controller .aplayer-bar-wrap .aplayer-bar .aplayer-loaded {
-            background: rgba(200,169,110,0.2) !important;
-        }
-        .aplayer .aplayer-volume-wrap .aplayer-volume-bar-wrap .aplayer-volume-bar .aplayer-volume {
-            background: var(--lux-accent) !important;
-        }
-        .aplayer .aplayer-lrc p { color: var(--lux-text-muted) !important; }
-        .aplayer .aplayer-lrc p.aplayer-lrc-current { color: var(--lux-accent) !important; }
-
-        /* 歌词浮层 */
-        .lyrics-current { color: var(--lux-accent) !important; }
-        .lyrics-prev, .lyrics-next { color: var(--lux-text-muted) !important; }
-
-        /* 滚动条 */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--lux-bg); }
-        ::-webkit-scrollbar-thumb {
-            background: var(--lux-border-strong);
-            border-radius: 0;
-        }
-        ::-webkit-scrollbar-thumb:hover { background: var(--lux-accent-deep); }
-
-        /* 选中文字 */
-        ::selection {
-            background: rgba(200,169,110,0.25);
-            color: var(--lux-text);
-        }
     </style>
 </head>
 <body>
@@ -3277,11 +2900,12 @@
             setTimeout(startLrcSync, 500);
         }
 
-        function tryFetch() {
+        function tryFetch(apiUrl, nextUrl) {
             const loadingEl = document.getElementById('musicLoading');
-            const apis = Array.prototype.slice.call(arguments);
-            const attemptCount = apis.length;
-            let currentAttempt = 0;
+            let attemptCount = 1;
+            if (nextUrl) attemptCount = 2;
+            
+            let currentAttempt = 1;
             
             function updateLoadingStatus(message) {
                 if (loadingEl) {
@@ -3292,47 +2916,48 @@
                 }
             }
             
-            function fetchNext() {
-                if (currentAttempt >= apis.length) {
-                    updateLoadingStatus('使用本地歌单');
-                    setTimeout(() => {
-                        indexLrcData(FALLBACK_AUDIO, FALLBACK_LRC);
-                        createPlayer(FALLBACK_AUDIO);
-                    }, 500);
-                    return;
-                }
-                
-                currentAttempt++;
-                const apiUrl = apis[currentAttempt - 1];
-                updateLoadingStatus(`正在加载歌单... (${currentAttempt}/${attemptCount})`);
-                
-                fetch(apiUrl)
-                    .then(function(r) { return r.json(); })
-                    .then(function(data) {
-                        if (data && data.length) {
-                            updateLoadingStatus('加载成功！');
-                            setTimeout(() => {
-                                indexLrcData(data, null);
-                                createPlayer(data);
-                            }, 500);
-                        } else {
-                            fetchNext();
-                        }
-                    })
-                    .catch(function() {
-                        fetchNext();
-                    });
-            }
+            updateLoadingStatus(`正在加载歌单... (${currentAttempt}/${attemptCount})`);
             
-            fetchNext();
+            fetch(apiUrl)
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data && data.length) {
+                        updateLoadingStatus('加载成功！');
+                        setTimeout(() => {
+                            indexLrcData(data, null);
+                            createPlayer(data);
+                        }, 500);
+                    } else if (nextUrl) {
+                        currentAttempt++;
+                        updateLoadingStatus(`切换备用源... (${currentAttempt}/${attemptCount})`);
+                        tryFetch(nextUrl, null);
+                    } else {
+                        updateLoadingStatus('使用本地歌单');
+                        setTimeout(() => {
+                            indexLrcData(FALLBACK_AUDIO, FALLBACK_LRC);
+                            createPlayer(FALLBACK_AUDIO);
+                        }, 500);
+                    }
+                })
+                .catch(function() {
+                    if (nextUrl) {
+                        currentAttempt++;
+                        updateLoadingStatus(`切换备用源... (${currentAttempt}/${attemptCount})`);
+                        tryFetch(nextUrl, null);
+                    } else {
+                        updateLoadingStatus('使用本地歌单');
+                        setTimeout(() => {
+                            indexLrcData(FALLBACK_AUDIO, FALLBACK_LRC);
+                            createPlayer(FALLBACK_AUDIO);
+                        }, 500);
+                    }
+                });
         }
 
         function initMusicPlayer() {
             var api1 = 'https://api.i-meto.com/meting/api?server=netease&type=playlist&id=' + PLAYLIST_ID;
             var api2 = 'https://api.injahow.cn/meting/?server=netease&type=playlist&id=' + PLAYLIST_ID;
-            var api3 = 'https://music.metowolf.com/api/meting/?server=netease&type=playlist&id=' + PLAYLIST_ID;
-            var api4 = 'https://api.paugram.com/meting/?server=netease&type=playlist&id=' + PLAYLIST_ID;
-            tryFetch(api1, api2, api3, api4);
+            tryFetch(api1, api2);
         }
     </script>
     <script>
