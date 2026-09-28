@@ -2403,6 +2403,328 @@
                 scroll-behavior: auto !important;
             }
         }
+
+        /* =====================================================
+           Apple 官网设计风格 (Apple Design Language) 覆盖样式
+           设计原则：纯黑背景 · SF 字体体系 · 蓝色点缀 · 大留白 · 毛玻璃
+           ===================================================== */
+        :root {
+            --apple-bg: #000000;
+            --apple-surface: #1d1d1f;
+            --apple-surface-2: #2c2c2e;
+            --apple-text: #f5f5f7;
+            --apple-text-secondary: #a1a1a6;
+            --apple-text-tertiary: #6e6e73;
+            --apple-accent: #2997ff;
+            --apple-accent-hover: #147ce5;
+            --apple-border: rgba(255, 255, 255, 0.10);
+            --apple-border-strong: rgba(255, 255, 255, 0.18);
+            --apple-card: rgba(29, 29, 31, 0.72);
+            --apple-shadow: 0 4px 24px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0,0,0,0.4);
+            --apple-radius: 18px;
+            --apple-radius-sm: 12px;
+            --apple-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        html, body {
+            background: var(--apple-bg) !important;
+            color: var(--apple-text) !important;
+            font-family: var(--apple-font);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            letter-spacing: -0.01em;
+        }
+
+        /* 背景层：去除太空元素，纯黑 */
+        .bg-gradient { background: var(--apple-bg) !important; }
+        .bg-gradient::after { background: none !important; animation: none !important; }
+        #stars, #meteors { display: none !important; }
+        .glow-orbs { display: none !important; }
+        .hero-bg-glow { display: none !important; }
+
+        /* 页面加载器 */
+        .page-loader { background: var(--apple-bg) !important; }
+        .loader-circle {
+            border: 2px solid rgba(255,255,255,0.08) !important;
+            border-top-color: var(--apple-accent) !important;
+            width: 32px !important; height: 32px !important;
+        }
+        .loader-text {
+            color: var(--apple-text-tertiary) !important;
+            font-size: 0.75rem !important;
+            letter-spacing: 0.2em !important;
+            font-weight: 500;
+        }
+
+        /* 导航 — Apple 毛玻璃风格 */
+        nav {
+            background: rgba(0, 0, 0, 0.72) !important;
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid var(--apple-border) !important;
+        }
+        .nav-logo {
+            color: var(--apple-text) !important;
+            font-weight: 600 !important;
+            letter-spacing: -0.02em;
+            font-size: 1.05rem;
+        }
+        .nav-links a {
+            color: var(--apple-text-secondary) !important;
+            font-size: 0.85rem;
+            font-weight: 400;
+            transition: color .2s ease;
+        }
+        .nav-links a:hover { color: var(--apple-text) !important; }
+        .nav-links a.active { color: var(--apple-text) !important; }
+        .nav-links a.active::after { background: var(--apple-accent) !important; }
+
+        /* 区块通用 */
+        section { scroll-margin-top: 80px; }
+        .section-tag {
+            color: var(--apple-accent) !important;
+            font-size: 0.8rem !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.02em !important;
+            text-transform: uppercase;
+        }
+        .section-title {
+            color: var(--apple-text) !important;
+            font-weight: 700 !important;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+        }
+        .section-line { display: none !important; }
+
+        /* Hero — Apple 大标题居中风格 */
+        .hero-subtitle {
+            color: var(--apple-text-secondary) !important;
+            font-size: 1.1rem !important;
+            font-weight: 500 !important;
+            letter-spacing: 0.02em !important;
+        }
+        .hero-title {
+            font-weight: 700 !important;
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+        }
+        .hero-title .line1 { color: var(--apple-text) !important; }
+        .hero-title .line2 {
+            color: var(--apple-accent) !important;
+            font-style: normal !important;
+            font-weight: 700 !important;
+        }
+        .hero-desc {
+            color: var(--apple-text-secondary) !important;
+            letter-spacing: 0.05em !important;
+            font-size: 1.15rem !important;
+        }
+        .stat-number {
+            color: var(--apple-text) !important;
+            font-weight: 700 !important;
+            letter-spacing: -0.03em;
+        }
+        .stat-label {
+            color: var(--apple-text-tertiary) !important;
+            font-size: 0.85rem;
+        }
+
+        /* 高亮文字 */
+        .highlight { color: var(--apple-accent) !important; }
+
+        /* 卡片 — Apple 圆角 + 柔和边框 */
+        .about-card,
+        .achievement-card,
+        .school-card {
+            background: var(--apple-surface) !important;
+            border: 1px solid var(--apple-border) !important;
+            border-radius: var(--apple-radius) !important;
+            box-shadow: var(--apple-shadow) !important;
+            transition: transform .35s cubic-bezier(.25,.1,.25,1), border-color .35s ease, background .35s ease;
+        }
+        .about-card:hover,
+        .achievement-card:hover,
+        .school-card:hover {
+            transform: translateY(-4px) scale(1.01);
+            border-color: var(--apple-border-strong) !important;
+            background: var(--apple-surface-2) !important;
+        }
+        .about-card h3,
+        .achievement-title,
+        .school-card h3 {
+            color: var(--apple-text) !important;
+            font-weight: 600 !important;
+            letter-spacing: -0.02em;
+        }
+        .about-card p,
+        .achievement-desc,
+        .school-card p {
+            color: var(--apple-text-secondary) !important;
+            line-height: 1.6;
+        }
+        .achievement-year {
+            color: var(--apple-accent) !important;
+            font-weight: 600;
+            letter-spacing: 0;
+        }
+
+        /* 二维码框 */
+        .qrcode-box {
+            border-radius: var(--apple-radius-sm) !important;
+            border: 1px solid var(--apple-border) !important;
+            background: #fff !important;
+        }
+        .qrcode-text { color: var(--apple-text-tertiary) !important; font-size: 0.8rem; }
+
+        /* 时间线 */
+        .timeline-track {
+            background: var(--apple-border) !important;
+        }
+        .timeline-dot {
+            background: var(--apple-surface) !important;
+            border: 2px solid var(--apple-accent) !important;
+            box-shadow: 0 0 0 4px rgba(41,151,255,0.12) !important;
+        }
+        .timeline-card {
+            background: var(--apple-surface) !important;
+            border: 1px solid var(--apple-border) !important;
+            border-radius: var(--apple-radius) !important;
+            box-shadow: var(--apple-shadow) !important;
+            transition: transform .35s cubic-bezier(.25,.1,.25,1), border-color .35s ease;
+        }
+        .timeline-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--apple-border-strong) !important;
+        }
+        .timeline-date-badge {
+            color: var(--apple-accent) !important;
+            background: rgba(41,151,255,0.1) !important;
+            border: none !important;
+            border-radius: 100px !important;
+            font-size: 0.78rem !important;
+            font-weight: 600;
+            padding: 4px 12px !important;
+        }
+        .timeline-card h3 {
+            color: var(--apple-text) !important;
+            font-weight: 600 !important;
+            letter-spacing: -0.02em;
+        }
+        .timeline-card p { color: var(--apple-text-secondary) !important; line-height: 1.6; }
+
+        /* 表单 — Apple 输入框 */
+        .form-group input,
+        .form-group textarea {
+            background: var(--apple-surface) !important;
+            border: 1px solid var(--apple-border) !important;
+            border-radius: var(--apple-radius-sm) !important;
+            color: var(--apple-text) !important;
+            padding: 14px 16px !important;
+            font-size: 1rem;
+            transition: border-color .2s ease, box-shadow .2s ease;
+        }
+        .form-group input::placeholder,
+        .form-group textarea::placeholder { color: var(--apple-text-tertiary) !important; }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--apple-accent) !important;
+            box-shadow: 0 0 0 4px rgba(41,151,255,0.15) !important;
+            outline: none;
+        }
+
+        /* 按钮 — Apple 胶囊填充 */
+        .submit-btn {
+            background: var(--apple-accent) !important;
+            border: none !important;
+            color: #fff !important;
+            border-radius: 980px !important;
+            padding: 12px 28px !important;
+            font-size: 0.95rem !important;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            transition: background .2s ease, transform .15s ease;
+        }
+        .submit-btn:hover {
+            background: var(--apple-accent-hover) !important;
+            transform: scale(1.02);
+        }
+        .submit-btn:active { transform: scale(0.98); }
+        .submit-btn .btn-glow { display: none !important; }
+
+        /* 留言消息 */
+        .message-item {
+            background: var(--apple-surface) !important;
+            border: 1px solid var(--apple-border) !important;
+            border-radius: var(--apple-radius) !important;
+        }
+        .message-name { color: var(--apple-text) !important; font-weight: 600; }
+        .message-content { color: var(--apple-text-secondary) !important; line-height: 1.6; }
+        .message-date { color: var(--apple-text-tertiary) !important; font-size: 0.8rem; }
+
+        /* 空状态 */
+        .empty-state p { color: var(--apple-text-secondary) !important; }
+        .empty-hint { color: var(--apple-text-tertiary) !important; }
+
+        /* 链接 */
+        .link, a.link {
+            color: var(--apple-accent) !important;
+            border-bottom: none !important;
+        }
+        .link:hover { text-decoration: underline; }
+
+        /* 页脚 */
+        footer {
+            border-top: 1px solid var(--apple-border) !important;
+            background: var(--apple-surface) !important;
+        }
+        .footer-logo {
+            color: var(--apple-text) !important;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+        .footer-text { color: var(--apple-text-secondary) !important; }
+        .thank-title { color: var(--apple-accent) !important; font-weight: 600; }
+        .thank-text { color: var(--apple-text-secondary) !important; line-height: 1.8; }
+        .disclaimer p { color: var(--apple-text-tertiary) !important; }
+        .disclaimer-text { color: var(--apple-text-tertiary) !important; font-size: 0.75rem; }
+
+        /* APlayer Apple 深色适配 */
+        .aplayer {
+            background: var(--apple-surface) !important;
+            border: 1px solid var(--apple-border) !important;
+            border-radius: var(--apple-radius) !important;
+            box-shadow: var(--apple-shadow) !important;
+            color: var(--apple-text) !important;
+        }
+        .aplayer .aplayer-info .aplayer-music .aplayer-title { color: var(--apple-text) !important; font-weight: 600; }
+        .aplayer .aplayer-info .aplayer-music .aplayer-author { color: var(--apple-text-secondary) !important; }
+        .aplayer .aplayer-list ol li { border-top: 1px solid var(--apple-border) !important; }
+        .aplayer .aplayer-list ol li:hover { background: rgba(255,255,255,0.04) !important; }
+        .aplayer .aplayer-list ol li.aplayer-list-light { background: rgba(41,151,255,0.1) !important; }
+        .aplayer .aplayer-info .aplayer-controller .aplayer-bar-wrap .aplayer-bar .aplayer-played { background: var(--apple-accent) !important; }
+        .aplayer .aplayer-info .aplayer-controller .aplayer-bar-wrap .aplayer-bar .aplayer-loaded { background: rgba(255,255,255,0.15) !important; }
+        .aplayer .aplayer-volume-wrap .aplayer-volume-bar-wrap .aplayer-volume-bar .aplayer-volume { background: var(--apple-accent) !important; }
+        .aplayer .aplayer-lrc p { color: var(--apple-text-tertiary) !important; }
+        .aplayer .aplayer-lrc p.aplayer-lrc-current { color: var(--apple-accent) !important; }
+
+        /* 歌词浮层 */
+        .lyrics-current { color: var(--apple-accent) !important; }
+        .lyrics-prev, .lyrics-next { color: var(--apple-text-tertiary) !important; }
+
+        /* 滚动条 */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--apple-bg); }
+        ::-webkit-scrollbar-thumb {
+            background: var(--apple-surface-2);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover { background: #3a3a3c; }
+
+        /* 选中文字 */
+        ::selection {
+            background: rgba(41,151,255,0.3);
+            color: var(--apple-text);
+        }
     </style>
 </head>
 <body>
