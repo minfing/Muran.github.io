@@ -2405,8 +2405,8 @@
         }
 
         /* =====================================================
-           Apple 官网设计风格 (Apple Design Language) 覆盖样式
-           设计原则：纯黑背景 · SF 字体体系 · 蓝色点缀 · 大留白 · 毛玻璃
+           Apple iPhone 18 Pro 产品页风格 (参考 apple.com.cn/iphone-18-pro)
+           特征：纯黑 · 超大粗体标题 · 标题眉+大标题层级 · 醒目数字 · 居中Hero · 深色卡片
            ===================================================== */
         :root {
             --apple-bg: #000000;
@@ -2419,10 +2419,9 @@
             --apple-accent-hover: #147ce5;
             --apple-border: rgba(255, 255, 255, 0.10);
             --apple-border-strong: rgba(255, 255, 255, 0.18);
-            --apple-card: rgba(29, 29, 31, 0.72);
             --apple-shadow: 0 4px 24px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0,0,0,0.4);
-            --apple-radius: 18px;
-            --apple-radius-sm: 12px;
+            --apple-radius: 20px;
+            --apple-radius-sm: 14px;
             --apple-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", "Helvetica Neue", Helvetica, Arial, sans-serif;
         }
 
@@ -2435,14 +2434,14 @@
             letter-spacing: -0.01em;
         }
 
-        /* 背景层：去除太空元素，纯黑 */
+        /* 背景：纯黑，去除太空元素 */
         .bg-gradient { background: var(--apple-bg) !important; }
         .bg-gradient::after { background: none !important; animation: none !important; }
         #stars, #meteors { display: none !important; }
         .glow-orbs { display: none !important; }
         .hero-bg-glow { display: none !important; }
 
-        /* 页面加载器 */
+        /* 加载器 */
         .page-loader { background: var(--apple-bg) !important; }
         .loader-circle {
             border: 2px solid rgba(255,255,255,0.08) !important;
@@ -2456,7 +2455,7 @@
             font-weight: 500;
         }
 
-        /* 导航 — Apple 毛玻璃风格 */
+        /* 导航 — Apple 毛玻璃 */
         nav {
             background: rgba(0, 0, 0, 0.72) !important;
             backdrop-filter: saturate(180%) blur(20px);
@@ -2479,60 +2478,101 @@
         .nav-links a.active { color: var(--apple-text) !important; }
         .nav-links a.active::after { background: var(--apple-accent) !important; }
 
-        /* 区块通用 */
-        section { scroll-margin-top: 80px; }
+        /* 区块通用 — iPhone 18 Pro 风格：大留白 + 居中 */
+        section { scroll-margin-top: 80px; padding-top: 100px; padding-bottom: 100px; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+
+        /* 标题眉（eyebrow）— 对应 Apple 页面的小标题 */
         .section-tag {
             color: var(--apple-accent) !important;
-            font-size: 0.8rem !important;
+            font-size: 0.85rem !important;
             font-weight: 600 !important;
             letter-spacing: 0.02em !important;
             text-transform: uppercase;
+            display: block;
+            margin-bottom: 12px;
         }
+        /* 大标题 — Apple 超大粗体 */
         .section-title {
             color: var(--apple-text) !important;
             font-weight: 700 !important;
-            letter-spacing: -0.03em;
-            line-height: 1.1;
+            letter-spacing: -0.035em;
+            line-height: 1.08;
+            font-size: clamp(2.2rem, 5vw, 3.5rem) !important;
         }
         .section-line { display: none !important; }
 
-        /* Hero — Apple 大标题居中风格 */
+        /* Hero — iPhone 18 Pro 产品页风格：居中、超大标题 */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 20px 80px;
+        }
         .hero-subtitle {
-            color: var(--apple-text-secondary) !important;
-            font-size: 1.1rem !important;
-            font-weight: 500 !important;
-            letter-spacing: 0.02em !important;
+            color: var(--apple-accent) !important;
+            font-size: 1rem !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.15em !important;
+            text-transform: uppercase;
+            margin-bottom: 16px;
         }
         .hero-title {
             font-weight: 700 !important;
-            letter-spacing: -0.04em;
-            line-height: 1.05;
+            letter-spacing: -0.05em;
+            line-height: 1.02;
+            margin-bottom: 24px;
         }
-        .hero-title .line1 { color: var(--apple-text) !important; }
+        .hero-title .line1 {
+            color: var(--apple-text) !important;
+            display: block;
+            font-size: clamp(3rem, 9vw, 7rem);
+        }
         .hero-title .line2 {
-            color: var(--apple-accent) !important;
+            color: var(--apple-text-secondary) !important;
             font-style: normal !important;
-            font-weight: 700 !important;
+            font-weight: 600 !important;
+            display: block;
+            font-size: clamp(1.6rem, 4vw, 2.8rem);
+            letter-spacing: -0.02em;
+            margin-top: 8px;
         }
         .hero-desc {
             color: var(--apple-text-secondary) !important;
             letter-spacing: 0.05em !important;
-            font-size: 1.15rem !important;
+            font-size: 1.2rem !important;
+            font-weight: 400;
+            margin-top: 20px;
         }
+        /* 统计数字 — Apple 风格超大数字 */
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-top: 70px;
+            flex-wrap: wrap;
+        }
+        .stat-item { text-align: center; }
         .stat-number {
             color: var(--apple-text) !important;
             font-weight: 700 !important;
-            letter-spacing: -0.03em;
+            letter-spacing: -0.04em;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            line-height: 1;
         }
         .stat-label {
             color: var(--apple-text-tertiary) !important;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
+            margin-top: 8px;
+            letter-spacing: 0.02em;
         }
 
-        /* 高亮文字 */
-        .highlight { color: var(--apple-accent) !important; }
+        /* 高亮 */
+        .highlight { color: var(--apple-accent) !important; font-weight: 600; }
 
-        /* 卡片 — Apple 圆角 + 柔和边框 */
+        /* 卡片 — iPhone 18 Pro 深色表面卡片 */
         .about-card,
         .achievement-card,
         .school-card {
@@ -2540,14 +2580,13 @@
             border: 1px solid var(--apple-border) !important;
             border-radius: var(--apple-radius) !important;
             box-shadow: var(--apple-shadow) !important;
-            transition: transform .35s cubic-bezier(.25,.1,.25,1), border-color .35s ease, background .35s ease;
+            transition: transform .4s cubic-bezier(.25,.1,.25,1), border-color .35s ease;
         }
         .about-card:hover,
         .achievement-card:hover,
         .school-card:hover {
-            transform: translateY(-4px) scale(1.01);
+            transform: translateY(-6px);
             border-color: var(--apple-border-strong) !important;
-            background: var(--apple-surface-2) !important;
         }
         .about-card h3,
         .achievement-title,
@@ -2555,6 +2594,7 @@
             color: var(--apple-text) !important;
             font-weight: 600 !important;
             letter-spacing: -0.02em;
+            font-size: 1.3rem;
         }
         .about-card p,
         .achievement-desc,
@@ -2576,10 +2616,8 @@
         }
         .qrcode-text { color: var(--apple-text-tertiary) !important; font-size: 0.8rem; }
 
-        /* 时间线 */
-        .timeline-track {
-            background: var(--apple-border) !important;
-        }
+        /* 时间线 — Apple 简洁风格 */
+        .timeline-track { background: var(--apple-border) !important; }
         .timeline-dot {
             background: var(--apple-surface) !important;
             border: 2px solid var(--apple-accent) !important;
@@ -2590,12 +2628,9 @@
             border: 1px solid var(--apple-border) !important;
             border-radius: var(--apple-radius) !important;
             box-shadow: var(--apple-shadow) !important;
-            transition: transform .35s cubic-bezier(.25,.1,.25,1), border-color .35s ease;
+            transition: transform .4s cubic-bezier(.25,.1,.25,1), border-color .35s ease;
         }
-        .timeline-card:hover {
-            transform: translateY(-3px);
-            border-color: var(--apple-border-strong) !important;
-        }
+        .timeline-card:hover { transform: translateY(-4px); border-color: var(--apple-border-strong) !important; }
         .timeline-date-badge {
             color: var(--apple-accent) !important;
             background: rgba(41,151,255,0.1) !important;
@@ -2644,10 +2679,7 @@
             letter-spacing: 0.01em;
             transition: background .2s ease, transform .15s ease;
         }
-        .submit-btn:hover {
-            background: var(--apple-accent-hover) !important;
-            transform: scale(1.02);
-        }
+        .submit-btn:hover { background: var(--apple-accent-hover) !important; transform: scale(1.02); }
         .submit-btn:active { transform: scale(0.98); }
         .submit-btn .btn-glow { display: none !important; }
 
@@ -2714,10 +2746,7 @@
         /* 滚动条 */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--apple-bg); }
-        ::-webkit-scrollbar-thumb {
-            background: var(--apple-surface-2);
-            border-radius: 4px;
-        }
+        ::-webkit-scrollbar-thumb { background: var(--apple-surface-2); border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #3a3a3c; }
 
         /* 选中文字 */
